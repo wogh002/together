@@ -1,4 +1,5 @@
 {
+  // ts 설정파일이에요 구글 검색. go.
   "compilerOptions": {
     "target": "es5",
     "lib": [
