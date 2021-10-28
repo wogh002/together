@@ -85,3 +85,9 @@ export const BlueBtn = styled(Button)`
             color:white;
         }
 `
+export const Error = styled.span`
+     color: ${({ theme: { colors: { red } } }) => red};
+     position: absolute;
+     bottom: 6rem;
+     left: 5rem;
+`

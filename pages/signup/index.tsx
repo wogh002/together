@@ -2,7 +2,7 @@ import React from 'react';
 import { Input } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 // @ts-ignore
-import {Form,BlueBtn} from './index.ts';
+import { Form, BlueBtn, Error } from './index.ts';
 const Index = () => {
     // TODO: 타입 좁히기
     const onSubmit = (e: any) => {
@@ -46,6 +46,7 @@ const Index = () => {
                         placeholder="Enter your Password"
                         prefix={<UserOutlined className="site-form-item-icon" />}
                     />
+                    <Error>aaaa </Error>
                     <Input
                         required
                         type="password"
