@@ -2,7 +2,7 @@ import React from 'react';
 import { Input } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 // @ts-ignore
-import { Form, BlueBtn, Error } from './index.ts';
+import { Form, BlueBtn, Message } from './index.ts';
 const Index = () => {
     // TODO: 타입 좁히기
     const onSubmit = (e: any) => {
@@ -22,9 +22,10 @@ const Index = () => {
                         placeholder="Enter your ID"
                         prefix={<UserOutlined className="site-form-item-icon" />}
                     />
-                    <BlueBtn type="primary">
+                    <button type="button">
                         Check ID
-                    </BlueBtn>
+                    </button>
+                    <Message color="#D30000">아이디 중복</Message>
                     <Input
                         required
                         type="text"
@@ -46,7 +47,7 @@ const Index = () => {
                         placeholder="Enter your Password"
                         prefix={<UserOutlined className="site-form-item-icon" />}
                     />
-                    <Error>aaaa </Error>
+                    <Message color="#4CAF50">비밀번호 불일치 </Message>
                     <Input
                         required
                         type="password"

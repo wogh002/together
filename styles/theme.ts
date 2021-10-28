@@ -10,6 +10,7 @@ export const theme: DefaultTheme = {  // theme의 타입은 DefaultTheme 에요
         orange: '#eb7952',
         blue: '#0066ff',
         red: '#D30000',
+        green: '#4CAF50',
         gray: '#6e6e6e',
         gray_background: '#f5f5f5',
     },

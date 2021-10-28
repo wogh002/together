@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Button } from 'antd';
 export const Form = styled.form`
 /* mobile */
@@ -28,14 +28,30 @@ export const Form = styled.form`
         background-color: black;
         opacity: 0.8;
         border-radius: 3.5rem;
+        letter-spacing: -0.09rem;
+        width: 38%;
+        font-weight: 700;
+        font-size: 1.5rem;
+        padding: 1.5rem;
+        cursor: pointer;
+        transition: all 250ms ease-in-out;
     }
     & > div > span:nth-child(1) + button:hover {
         opacity: 0.5;
     }
+    & > div > span:nth-child(1) + button + span {
+        top: 0.5rem;
+        z-index: -5;
+        ${({ color, theme: { colors } }) => color === colors.red && css`
+        color: #D30000;
+    `}
+    }
+
     svg {
         font-size: 2rem;
         margin-bottom: 0.5rem;
     }
+
     div span input {
         width: 100%;
         border-radius: 1rem;
@@ -85,9 +101,14 @@ export const BlueBtn = styled(Button)`
             color:white;
         }
 `
-export const Error = styled.span`
+export const Message = styled.span`
      color: ${({ theme: { colors: { red } } }) => red};
+     font-size: 1.1rem;
      position: absolute;
      bottom: 6rem;
-     left: 5rem;
+     left: 2.2rem;
+     ${({ color, theme: { colors } }) => color === colors.green && css`
+        color: #4CAF50;
+    `}
+    
 `
