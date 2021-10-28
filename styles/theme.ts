@@ -8,6 +8,7 @@ export const theme: DefaultTheme = {  // theme의 타입은 DefaultTheme 에요
         black: '#1e1f1d',
         yellow: '#edb83c',
         orange: '#eb7952',
+        blue: '#0066ff',
         gray: '#6e6e6e',
         gray_background: '#f5f5f5',
     },
