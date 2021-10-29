@@ -1,9 +1,10 @@
 import React, { ChangeEvent, useState } from "react";
 import { Form, Button, Input, Select, Radio } from "antd";
+import imageCompression from 'browser-image-compression';
 import styled from "styled-components";
 import "antd/dist/antd.css";
 const { Option } = Select;
-const ImageSection =styled.section`
+const ImageSection = styled.section`
   margin-bottom: 2rem;
   label {
     cursor: pointer;
@@ -31,6 +32,7 @@ const ImageContainer = styled.div`
       max-width: 100%;
       height: auto;
       margin-bottom: 3rem;
+      border-radius: 20rem;
     }
     button {
         min-width: 6.6rem;
@@ -52,11 +54,16 @@ const ImageContainer = styled.div`
     }
 `
 
+const FileTypes = {
+  JPG: "JPG",
+  PNG: "PNG",
+  JPEG: "JPEG",
+  BMP: "BMP",
+}
 
 const AddPost = (props) => {
-  
-  const [fileImage, setFileImage] = useState("");
 
+  const [fileImage, setFileImage] = useState("");
   const onFinish = (values) => {
     console.log("Success:", values);
   };
@@ -64,19 +71,53 @@ const AddPost = (props) => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-
-
-  // 파일 저장 
-  const saveFileImage = (e) => {
-    setFileImage(URL.createObjectURL(e.target.files[0]));
+  // 파일 압축
+  const compressImage = async (image) => {
+    try {
+      const options = {
+        maxSizeMb: 1,
+        maxWidthOrHeight: 300,
+      }
+      return await imageCompression(image, options);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  //파일 확장자 체크.
+  const fileTypeCheck = ({ target }) => {
+    const filePath = target.value;
+    const pathPoint = filePath.lastIndexOf('.');
+    const fileExtentionName = filePath.substring(pathPoint + 1, filePath.length).toUpperCase();
+    const { JPG, PNG, JPEG, BMP } = FileTypes;
+    if (
+      fileExtentionName === JPG ||
+      fileExtentionName === PNG ||
+      fileExtentionName === JPEG ||
+      fileExtentionName === BMP
+    ) {
+      saveFileImage(target.files);
+    }
+    else {
+      alert('이미지 파일만 업로드 가능합니다.');
+    }
+  }
+  // 파일 저장
+  const saveFileImage = async (files) => {
+    if (files && files[0]) {
+      const formData = new FormData();
+      const originalImage = files[0];
+      const compressedImage = await compressImage(originalImage);
+      formData.append('file', compressedImage);
+      console.log(compressedImage);
+      // 서버 요청시  formData 줘야함.
+      setFileImage(URL.createObjectURL(compressedImage));
+    }
   };
   // 파일 삭제 
   const deleteFileImage = () => {
     URL.revokeObjectURL(fileImage);
     setFileImage("");
   };
-
-
 
   return (
     <div
@@ -174,22 +215,21 @@ const AddPost = (props) => {
           </Select>
         </Form.Item>
 
-        <Form.Item
+        {/* <Form.Item
           label="연락처"
           rules={[{ required: true }]}
         >
           <Input />
-        </Form.Item>
+        </Form.Item> */}
 
         {/* 이미지 */}
         <ImageSection>
-          <h1>Your Profile</h1>
           <div>
             {
               fileImage &&
               (
                 <ImageContainer>
-                  <img src={fileImage} alt="user-profile"/>
+                  <img src={fileImage} alt="user-profile" />
                   <button onClick={() => deleteFileImage()}>
                     삭제
                   </button>
@@ -197,14 +237,14 @@ const AddPost = (props) => {
               )
             }
             <label htmlFor="input-file">
-              Photo Upload ✔
+              Face Upload 😎
             </label>
             <input
               type="file"
               id="input-file"
               accept="image/*"
               style={{ display: "none" }}
-              onChange={saveFileImage}
+              onChange={fileTypeCheck}
             />
           </div>
         </ImageSection>
