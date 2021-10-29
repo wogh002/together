@@ -12,7 +12,8 @@ const postDummyData = [
   },
 ];
 
-const Index = (props) => {
+
+const Main = (props) => {
 
   const [visible, setVisible] = React.useState(false);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
@@ -123,4 +124,4 @@ const Index = (props) => {
   );
 };
 
-export default Index;
+export default Main;
