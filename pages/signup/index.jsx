@@ -1,11 +1,9 @@
 import React from 'react';
 import { Input } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-// @ts-ignore
-import { Form, BlueBtn, Message } from './index.ts';
+import { Form, BlueBtn, Message } from './index';
 const Index = () => {
-    // TODO: 타입 좁히기
-    const onSubmit = (e: any) => {
+    const onSubmit = (e) => {
         e.preventDefault();
     }
     return (

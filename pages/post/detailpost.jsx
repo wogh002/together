@@ -3,7 +3,7 @@ import { Modal, Button } from 'antd';
 import styled from "styled-components";
 import "antd/dist/antd.css";
 
-const DetailPost = (props: any) => {
+const DetailPost = (props) => {
 
   const [visible, setVisible] = React.useState(false);
   const [confirmLoading, setConfirmLoading] = React.useState(false);

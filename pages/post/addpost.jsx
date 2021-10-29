@@ -53,20 +53,21 @@ const ImageContainer = styled.div`
 `
 
 
-const AddPost = (props: any) => {
+const AddPost = (props) => {
+  
   const [fileImage, setFileImage] = useState("");
 
-  const onFinish = (values: any) => {
+  const onFinish = (values) => {
     console.log("Success:", values);
   };
 
-  const onFinishFailed = (errorInfo: any) => {
+  const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
 
   // 파일 저장 
-  const saveFileImage = (e: any) => {
+  const saveFileImage = (e) => {
     setFileImage(URL.createObjectURL(e.target.files[0]));
   };
   // 파일 삭제 

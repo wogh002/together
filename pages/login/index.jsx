@@ -1,9 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Input } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-// @ts-ignore
-import { Form, BlueBtn, Message } from '../signup/index.ts';
+import { Form, BlueBtn, Message } from '../signup/index';
 const Index = () => {
     return (
         <Form>

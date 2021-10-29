@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Card, } from "antd";
 import "antd/dist/antd.css";
-// @ts-ignore
-import { AddBtn, CardForm, CardItem } from "./index.ts";
+import { AddBtn, CardForm, CardItem } from "./index";
 
 const postDummyData = [
   {
@@ -13,7 +12,7 @@ const postDummyData = [
   },
 ];
 
-const Index = (props: any) => {
+const Index = (props) => {
 
   const [visible, setVisible] = React.useState(false);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
