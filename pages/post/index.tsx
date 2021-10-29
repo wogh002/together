@@ -1,6 +1,5 @@
-import React from "react";
-import { Card, Col, Row } from "antd";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
+import { Modal, Card, } from "antd";
 import "antd/dist/antd.css";
 // @ts-ignore
 import { AddBtn, CardForm, CardItem } from "./index.ts";
@@ -15,11 +14,33 @@ const postDummyData = [
 ];
 
 const Index = (props: any) => {
+
+  const [visible, setVisible] = React.useState(false);
+  const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [modalText, setModalText] = React.useState('Content of the modal');
+
+  const showModal = () => {
+    setVisible(true);
+  };
+
+  const handleOk = () => {
+    setModalText('The modal will be closed after two seconds');
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setVisible(false);
+      setConfirmLoading(false);
+    }, 2000);
+  };
+
+  const handleCancel = () => {
+    setVisible(false);
+  };
+
   return (
     <>
       <div className="site-card-wrapper">
         <CardForm>
-          <CardItem>
+          <CardItem onClick={showModal}>
             <Card
               cover={
                 <img
@@ -80,9 +101,24 @@ const Index = (props: any) => {
             </Card>
           </CardItem>
         </CardForm>
-        {/* <AddBtn>
-          <PlusCircleOutlined />
-        </AddBtn> */}
+        
+        <Modal
+        title="양송현님의 정보"
+        visible={visible}
+        onOk={handleOk}
+        confirmLoading={confirmLoading}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <p><label>상태: </label>프젝구함</p>
+        <p><label>주특기: </label>프론트/리액트</p>
+        <p><label>가능지역: </label>서울특별시/송파구</p>
+        <p><label>연락처: </label>010-0000-2222</p>
+        {/* 이미지추가 */}
+        <p><label>소개: </label>프론트엔드 개발자 학생으로 프로젝트하실분 구합니다요</p>
+        {/* 첨부파일 */}
+        </Modal>     
+
       </div>
     </>
   );
