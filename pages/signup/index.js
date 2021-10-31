@@ -10,6 +10,7 @@ export const Form = styled.form`
         width: 100%;
         text-align: center;
         letter-spacing: -0.09rem;
+        margin-bottom: 6rem;
     }
     & > div {
         position: relative;
@@ -25,11 +26,11 @@ export const Form = styled.form`
         right: 0;
         border: none;
         color: white;
-        background-color: black;
+        background-color: #0066ff;
         opacity: 0.8;
         border-radius: 3.5rem;
         letter-spacing: -0.09rem;
-        width: 38%;
+        width: 25%;
         font-weight: 700;
         font-size: 1.5rem;
         padding: 1.5rem;
