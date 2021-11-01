@@ -14,13 +14,7 @@ const SearchBar = styled.div`
   width: 100%;
   height: 15vh;
   background: lightblue;
-
-export const GhostWrapper = styled.div`
-    margin: 0px;
-    padding: 5px;
-    background-color: #f5f5f5;
-
-`;
+`
 const { Header, Footer, Content } = Layout;
 const { Option } = Select;
 
@@ -48,9 +42,7 @@ const selectframework = (
     <Option value="스프링부트">스프링부트</Option>
   </Select>
 );
-
-
-const Index = (props) => {
+const Index = ({children}) => {
   const [click, setClick] = useState(true);
   const [value, setValue] = React.useState(1);
   const onChange = e => {
@@ -59,13 +51,8 @@ const Index = (props) => {
   };
 
   const ToggleSearchbar = useCallback(()=>{
-    setClick ((prev) => !prev);
+    setClick ((prev) => !prev); 
   },[])
-
-  return (
-    <>
-      <div style={{  }}>
-const Index = (props) => {
   return (
     <>
       <div style={{ padding: '0px 130px' }}>
