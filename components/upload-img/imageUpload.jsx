@@ -14,7 +14,7 @@ const ImageUpload = () => {
         try {
             const options = {
                 maxSizeMb: 1,
-                maxWidthOrHeight: 300,
+                maxWidthOrHeight: 250,
             }
             return await imageCompression(image, options);
         } catch (e) {

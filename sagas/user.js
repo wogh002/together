@@ -6,16 +6,17 @@ import {
     LOGIN_SUCCESS,
 } from '../reducers/user';
 import axios from '../util';
-const logInAPI = data => {
-    return axios.post('/user/login', data);
-}
+// const logInAPI = data => {
+//     return axios.post('/user/login', data);
+// }
 function* logIn(action) {
     try {
-        const result = yield call(logInAPI, action.data);
-        yield delay(1000);
+        // const result = yield call(logInAPI, action.data);
+        // yield delay(1000);
         yield put({
             type: LOGIN_SUCCESS,
-            data: result.data
+            data: action.data
+            // data: result.data
         });
     } catch (error) {
         yield put({
