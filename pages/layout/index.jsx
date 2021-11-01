@@ -14,10 +14,14 @@ const SearchBar = styled.div`
   width: 100%;
   height: 15vh;
   background: lightblue;
+
+export const GhostWrapper = styled.div`
+    margin: 0px;
+    padding: 5px;
+    background-color: #f5f5f5;
+
 `;
-
 const { Header, Footer, Content } = Layout;
-
 const { Option } = Select;
 
 const selectSi = (
@@ -61,6 +65,10 @@ const Index = (props) => {
   return (
     <>
       <div style={{  }}>
+const Index = (props) => {
+  return (
+    <>
+      <div style={{ padding: '0px 130px' }}>
         <Layout>
           <GhostWrapper>
             <PageHeader
@@ -105,11 +113,11 @@ const Index = (props) => {
             } 
             <Main />
           </Content>
+          <Content style={{ background: 'red' }}>Content</Content>
           <Footer>Footer</Footer>
         </Layout>
       </div>
     </>
   );
 };
-
 export default Index;

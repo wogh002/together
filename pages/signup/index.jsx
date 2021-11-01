@@ -2,6 +2,7 @@ import React from 'react';
 import { Input } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Form, BlueBtn, Message } from './index';
+import ImageUpload from '../../components/upload-img/imageUpload';
 const Index = () => {
     const onSubmit = (e) => {
         e.preventDefault();
@@ -10,8 +11,9 @@ const Index = () => {
         <Form>
             <>
                 <h1>
-                    Sign Up
+                    회원가입
                 </h1>
+                <ImageUpload />
                 <div>
                     <Input
                         required
