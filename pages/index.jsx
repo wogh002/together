@@ -1,13 +1,18 @@
 import styled from 'styled-components';
-const Main = styled.main`
-  /* 예시 */
-  font-size: 150px;
-  background-color: ${(props) => props.theme.colors.orange}
-`
+import wrapper from '../store/configureStore';
+import Layout from './layout/index';
 const Home = () => {
   return (
-    <Main>gogogo</Main>
+    <>
+      <Layout>
+        <main>gogogo</main>
+      </Layout>
+    </>
   )
 }
+export const getServerSideProps = wrapper.getServerSideProps((context) => {
+  console.log(context.payload);
+  //dispath --> ex) LOAD_MY_INFO 
+})
+export default Home;
 
-export default Home
