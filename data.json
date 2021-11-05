@@ -1,0 +1,74 @@
+{
+    "post":[
+        {
+            "postId": 1,
+            "insertDt": "insertDt",
+            "postState": "프젝구함",
+            "postCity": "postCity",
+            "postGu": "강남구",
+            "mainField": "front",
+            "lang": "lang",
+            "framework": "react",
+            "projectExperience": "1회",
+            "tel": "010-1111-1111",
+            "imagePath": "imagePath",
+            "postContent": "첫번째 포스트"
+        },
+        {
+            "postId": 2,
+            "insertDt": "insertDt",
+            "postState": "스터디구함",
+            "postCity": "postCity",
+            "postGu": "구로구",
+            "mainField": "back",
+            "lang": "lang",
+            "framework": "spring boot",
+            "projectExperience": "2회",
+            "tel": "010-2222-2222",
+            "imagePath": "imagePath",
+            "postContent": "두번째 포스트"
+        },
+        {
+            "postId": 3,
+            "insertDt": "insertDt",
+            "postState": "프젝구함",
+            "postCity": "postCity",
+            "postGu": "부천시",
+            "mainField": "front",
+            "lang": "lang",
+            "framework": "vue.js",
+            "projectExperience": "3회",
+            "tel": "010-3333-3333",
+            "imagePath": "imagePath",
+            "postContent": "세번째 포스트"
+        },
+        {
+            "postId": 4,
+            "insertDt": "insertDt",
+            "postState": "프젝구함",
+            "postCity": "postCity",
+            "postGu": "광명시",
+            "mainField": "back",
+            "lang": "lang",
+            "framework": "php",
+            "projectExperience": "4회",
+            "tel": "010-4444-4444",
+            "imagePath": "imagePath",
+            "postContent": "네번째 포스트"
+        },
+        {
+            "postId": 5,
+            "insertDt": "insertDt",
+            "postState": "스터디구함",
+            "postCity": "postCity",
+            "postGu": "송파구",
+            "mainField": "front",
+            "lang": "lang",
+            "framework": "react",
+            "projectExperience": "5회",
+            "tel": "010-5555-5555",
+            "imagePath": "imagePath",
+            "postContent": "다섯번째 포스트"
+        }
+    ]
+}

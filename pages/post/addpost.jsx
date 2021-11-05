@@ -1,28 +1,120 @@
-import React from "react";
+import React, { useState, useCallback, useEffect  } from "react";
+import { useSelector, useDispatch} from "react-redux";
+import { ADD_POST_REQUEST } from "../../reducers/post";
 import { Form, Button, Select, Radio } from "antd";
 import "antd/dist/antd.css";
-import styled from "styled-components"; 
+import styled from "styled-components";
 const { Option } = Select;
 const FormContainer = styled.section`
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    form {
-      padding-left: 1rem;
-    }
-    form > div {
-      margin-bottom: 4rem;
-    }
-    label {
-      font-weight: 700;
-    }
-`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  form {
+    padding-left: 1rem;
+  }
+  form > div {
+    margin-bottom: 4rem;
+  }
+  label {
+    font-weight: 700;
+  }
+`;
 const AddPost = () => {
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const dispatch = useDispatch();
+
+  const radioList = ["프로젝트 구함", "스터디 구함"];
+  const [Radiobox, setRadiobox] = useState("");
+  const handleRadio = (e) => {
+    console.log(e.target.value);
+    setRadiobox(e.target.value);
   };
+
+  const areaList = ["서울특별시", "경기도"];
+  const [Area, setArea] = useState("가능 지역 선택");
+  const handleArea = (e) => {
+    console.log(e);
+    setArea(e);
+  };
+
+  const siguList = ["광명시", "강남구"];
+  const [Sigu, setSigu] = useState("가능 지역 선택");
+  const handleSigu = (e) => {
+    console.log(e);
+    setSigu(e);
+  };
+
+  const mainFieldList = ["프론트엔드", "백엔드"];
+  const [MainField, setMainField] = useState("주분야 선택");
+  const handleMainField = (e) => {
+    console.log(e);
+    setMainField(e);
+  };
+
+  const language = ["spring", "springboot", "react", "vue.js"];
+  const [Language, setLanguage] = useState("언어 선택");
+  const handleLanguage = (e) => {
+    console.log(e);
+    setLanguage(e);
+  };
+
+  const framework = ["spring", "springboot", "react", "vue.js"];
+  const [Framework, setFramework] = useState("프레임워크 선택");
+  const handleFramework = (e) => {
+    console.log(e);
+    setFramework(e);
+  };
+
+  const experience = ["0회", "1회", "2~3회", "4~5회", "5회 이상"];
+  const [Experience, setExperience] = useState("프로젝트 경험");
+  const handleExperience = (e) => {
+    console.log(e);
+    setExperience(e);
+  };
+
+  // 구조분해할당 es6
+  const { addPostLoading, addPostDone } = useSelector(({ post }) => post);
+
+  useEffect(() => {
+    if (addPostDone) {
+      setText("");
+    }
+  }, [addPostDone]);
+
+  const onSubmitForm = useCallback(() => {
+    console.log({
+      data: {
+        postState: Radiobox,
+        postCity: Area,
+        postGu: Sigu,
+        mainField: MainField,
+        lang: Language,
+        framework: Framework,
+        projectExperience: Experience
+      }
+    })
+    // dispatch({
+    //   type: ADD_POST_REQUEST,
+    //   data: {
+    //     postState: Radiobox,
+    //     postCity: Area,
+    //     postGu: Sigu,
+    //     mainField: MainField,
+    //     lang: Language,
+    //     framework: Framework,
+    //     projectExperience: Experience
+    //   }
+    // });
+  }, [Radiobox,Area,Sigu,MainField,Language,Framework,Experience]);
+
+  function TextInput(e, setState){
+    setState(e.target.value);
+  }
+
+  // const onFinish = (values) => {
+  //   console.log("Success:", values);
+  // };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -32,34 +124,44 @@ const AddPost = () => {
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
-        onFinish={onFinish}
+        onFinish={onSubmitForm}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <Form.Item label="모집선택" name="size" style={{minWidth:400}}>
-          <Radio.Group>
-            <Radio.Button value="프로젝트">프로젝트 모집</Radio.Button>
-            <Radio.Button value="스터디">스터디 모집</Radio.Button>
+        <Form.Item label="모집선택" name="size" style={{ minWidth: 400 }}>
+          <Radio.Group value={Radiobox} onChange={handleRadio}>
+            {
+              radioList.map((item) => (
+                <Radio.Button key={item} value={item}>{item}</Radio.Button>
+              ))
+            }
           </Radio.Group>
         </Form.Item>
+        
         <Form.Item
           label="가능지역 선택"
           hasFeedback
           rules={[{ required: true, message: "Please select your country!" }]}
         >
           <Select
-            placeholder="Please select a country"
-            style={{ width: "100%" }}
+            onChange={handleArea}
+            value={Area}
           >
-            <Option value="china">China</Option>
-            <Option value="usa">U.S.A</Option>
+            {
+              areaList.map((item) => (
+                <Option key={item} value={item}>{item}</Option>
+              ))
+            }
           </Select>
           <Select
-            placeholder="Please select a country"
-            style={{ width: "100%" }}
+            onChange={handleSigu}
+            value={Sigu}
           >
-            <Option value="china">China</Option>
-            <Option value="usa">U.S.A</Option>
+            {
+              siguList.map((item) => (
+                <Option key={item} value={item}>{item}</Option>
+              ))
+            }
           </Select>
         </Form.Item>
 
@@ -68,55 +170,58 @@ const AddPost = () => {
           hasFeedback
           rules={[{ required: true, message: "선택" }]}
         >
+          <input type="text" onChange={(e) => TextInput(e, setMainField)} />
           <Select
-            placeholder="Please select a country"
-            style={{ width: "100%" }}
+            onChange={handleMainField}
+            value={MainField}
           >
-            <Option value="프론트엔드">프론트엔드</Option>
-            <Option value="백엔드">백엔드</Option>
+            {
+              mainFieldList.map((item) => (
+                <Option key={item} value={item}>{item}</Option>
+              ))
+            }
           </Select>
           <Select
-            placeholder="Please select a country"
-            style={{ width: "100%" }}
+            onChange={handleLanguage}
+            value={Language}
           >
-            <Option value="자바">자바</Option>
-            <Option value="파이썬">파이썬</Option>
-            <Option value="PHP">PHP</Option>
-            <Option value="C#">C#</Option>
-            <Option value="기타">기타</Option>
+            {
+              language.map((item) => (
+                <Option key={item} value={item}>{item}</Option>
+              ))
+            }
           </Select>
         </Form.Item>
 
         <Form.Item
-          label="프레임워크/경험횟수"
+          label="프레임워크/경험횟수: "
           hasFeedback
           rules={[{ required: true, message: "선택" }]}
         >
           <Select
-            placeholder="Please select a country"
-            style={{ width: "100%" }}
+            onChange={handleFramework}
+            value={Framework}
           >
-            <Option value="spring">spring(boot)</Option>
-            <Option value="node">node</Option>
-            <Option value="net">.net</Option>
-            <Option value="react">react</Option>
-            <Option value="vue">vue.js</Option>
-            <Option value="angular">angular</Option>
-            <Option value="기타">기타</Option>
+            {
+              framework.map((item) => (
+                <Option key={item} value={item}>{item}</Option>
+              ))
+            }
           </Select>
           <Select
-            placeholder="Please select a country"
-            style={{ width: "100%" }}
+            onChange={handleExperience}
+            value={Experience}
           >
-            <Option value="0">0번</Option>
-            <Option value="3">1~3번</Option>
-            <Option value="5">3~5번</Option>
-            <Option value="5이상">5번 이상</Option>
+            {
+              experience.map((item) => (
+                <Option key={item} value={item}>{item}</Option>
+              ))
+            }
           </Select>
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={addPostLoading} >
             Submit
           </Button>
         </Form.Item>

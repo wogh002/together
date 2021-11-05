@@ -15,7 +15,7 @@ const SearchBar = styled.div`
   height: 15vh;
   background: lightblue;
 `
-const { Header, Footer, Content } = Layout;
+const { Content } = Layout;
 const { Option } = Select;
 
 const selectSi = (
@@ -42,6 +42,7 @@ const selectframework = (
     <Option value="스프링부트">스프링부트</Option>
   </Select>
 );
+
 const Index = ({children}) => {
   const [click, setClick] = useState(true);
   const [value, setValue] = React.useState(1);
@@ -55,23 +56,9 @@ const Index = ({children}) => {
   },[])
   return (
     <>
-      <div style={{ padding: '0px 130px' }}>
+      <div style={{ }}>
         <Layout>
-          <GhostWrapper>
-            <PageHeader
-              className="site-page-header"
-              ghost={true}
-              title="개발투게더"
-              subTitle="프로젝트/스터디 인원 구합니다."
-              extra={[
-                <Button key="1" type="primary">
-                  로그인
-                </Button>,
-                <Button key="2">회원가입</Button>,
-              ]}
-            />
-          </GhostWrapper>
-          <Content style={{ background: "red" }}>
+          <Content>
             {
             click
             ? <SearchBar>
@@ -100,8 +87,7 @@ const Index = ({children}) => {
             } 
             <Main />
           </Content>
-          <Content style={{ background: 'red' }}>Content</Content>
-          <Footer>Footer</Footer>
+          {/* <Footer>Footer</Footer> */}
         </Layout>
       </div>
     </>

@@ -1,7 +1,7 @@
 import { HYDRATE } from 'next-redux-wrapper';
 import { combineReducers } from 'redux';
 import user from './user';
-// import post from './post';
+import post from './post';
 const rootReducer = (state, action) => {
     // SSR 시 action.type은 HYDRATE 된다.
     // 그 외의 경우는 default 로 빠짐.
@@ -12,7 +12,7 @@ const rootReducer = (state, action) => {
         default: {
             const combineReducer = combineReducers({
                 user,
-                // post
+                post
             });
             return combineReducer(state, action);
         }
