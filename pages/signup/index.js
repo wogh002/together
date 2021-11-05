@@ -104,7 +104,7 @@ export const BlueBtn = styled(Button)`
 `
 export const Message = styled.span`
      color: ${({ theme: { colors: { red } } }) => red};
-     font-size: 1.1rem;
+     font-size: 1.5rem;
      position: absolute;
      bottom: 6rem;
      left: 2.2rem;

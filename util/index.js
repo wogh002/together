@@ -1,5 +1,6 @@
 import axios from "axios";
 const instance = axios.create({
-    baseURL: '백엔드 주소'
+    baseURL: 'http://test.dahun.xyz:9876',
 });
+instance.defaults.withCredentials = true;
 export default instance;

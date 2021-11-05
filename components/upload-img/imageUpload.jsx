@@ -1,20 +1,21 @@
-import React,{useState}from 'react';
+import React, { useState } from 'react';
 import { ImageSection, ImageContainer } from './index';
 import imageCompression from 'browser-image-compression';
-const ImageUpload = () => {
+const ImageUpload = ({ setImageFile }) => {
+    const [fileImage, setFileImage] = useState("");
     const FileTypes = {
         JPG: "JPG",
         PNG: "PNG",
         JPEG: "JPEG",
         BMP: "BMP",
     }
-    const [fileImage, setFileImage] = useState("");
+
     // 파일 압축
     const compressImage = async (image) => {
         try {
             const options = {
-                maxSizeMb: 1,
-                maxWidthOrHeight: 250,
+                maxSizeMb: 0.3,
+                maxWidthOrHeight: 200,
             }
             return await imageCompression(image, options);
         } catch (e) {
@@ -24,13 +25,14 @@ const ImageUpload = () => {
     // 파일 저장
     const saveFileImage = async (files) => {
         if (files && files[0]) {
-            const formData = new FormData();
+            // const formData = new FormData();
             const originalImage = files[0];
-            const compressedImage = await compressImage(originalImage);
-            formData.append('file', compressedImage);
-            console.log(compressedImage);
-            // 서버 요청시  formData 줘야함.
-            setFileImage(URL.createObjectURL(compressedImage));
+            // const compressedImage = await compressImage(originalImage);
+            // formData.append('imageFile', compressedImage);
+            // const imageFile = formData.getAll('imageFile')[0];
+            setImageFile(originalImage);
+            // 서버 요청시  imageFile 줘야함.
+            setFileImage(URL.createObjectURL(originalImage));
         }
     };
     //파일 확장자 체크.
@@ -55,6 +57,7 @@ const ImageUpload = () => {
     const deleteFileImage = () => {
         URL.revokeObjectURL(fileImage);
         setFileImage("");
+        setImageFile(null);
     };
     return (
         <ImageSection>

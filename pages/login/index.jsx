@@ -1,23 +1,42 @@
-import React from 'react';
+import React, { useCallback, useState,useEffect } from 'react';
 import { Input } from 'antd';
+import { useRouter } from "next/router";
 import { UserOutlined } from '@ant-design/icons';
 import { Form, BlueBtn, Message } from '../signup/index';
 import { useDispatch, useSelector } from 'react-redux';
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from '../../reducers/user';
-const Index = () => {
+import { LOGIN_REQUEST } from '../../reducers/user';
+const Index = () => {   
     const dispatch = useDispatch();
-    const { logInLoading, logInDone, logInError } = useSelector(({ user }) => user);
-    const onClick = () => {
+    const router = useRouter();
+    const { logInDone, logInError } = useSelector(({ user }) => user);
+    const [userId, setUserId] = useState("");
+    const [userPw, setUserPw] = useState("");
+    const onSubmit = useCallback((e) => {
+        e.preventDefault();
         dispatch({
             type: LOGIN_REQUEST,
             data: {
-                id: 'ekekekekekekek',
-                password: '1234567',
+                userId,
+                userPw
             }
         })
+    }, [dispatch, userId, userPw]);
+
+    const onChangeId = ({ target }) => {
+        setUserId(target.value);
     }
+    const onChangePassword = ({ target }) => {
+        setUserPw(target.value);
+    }
+    // logInDone && 메인으로 이동
+    useEffect(() => {
+        logInDone && router.push("/");
+    }, [logInDone,router]);
+    useEffect(() => {
+        logInError && alert(logInError);
+    }, [logInError]);
     return (
-        <Form>
+        <Form onSubmit={onSubmit}>
             <>
                 <h1>
                     LogIn
@@ -26,6 +45,8 @@ const Index = () => {
                     <Input
                         required
                         type="text"
+                        value={userId}
+                        onChange={onChangeId}
                         maxLength={15}
                         placeholder="Enter your ID"
                         prefix={<UserOutlined className="site-form-item-icon" />}
@@ -33,6 +54,8 @@ const Index = () => {
                     <Input
                         required
                         type="password"
+                        value={userPw}
+                        onChange={onChangePassword}
                         maxLength={15}
                         placeholder="Enter your Password"
                         prefix={<UserOutlined className="site-form-item-icon" />}
@@ -41,7 +64,7 @@ const Index = () => {
                 </div>
             </>
             <div>
-                <BlueBtn type="primary" onClick={onClick}>
+                <BlueBtn type="primary" htmlType="submit">
                     로그인
                 </BlueBtn>
                 <BlueBtn type="primary">

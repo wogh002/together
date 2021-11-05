@@ -6,26 +6,55 @@ import produce from 'immer';
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAILURE = "LOGIN_FAILURE";
+export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
+export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS";
+export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE";
+export const CHECK_ID_REQUEST = "CHECK_ID_REQUEST";
+export const CHECK_ID_SUCCESS = "CHECK_ID_SUCCESS";
+export const CHECK_ID_FAILURE = "CHECK_ID_FAILURE";
 const initalState = {
     me: null,
-    logInLoading: false,
     logInDone: false,
     logInError: null,
+    signUpDone: false,
+    signUpError: null,
+    checkIdMessage: null,
+    checkIdError: null,
 }
 const reducer = (state = initalState, action) => produce(state, draft => {
     switch (action.type) {
         case LOGIN_REQUEST:
-            draft.logInLoading = true;
+            draft.me = null;
             draft.logInDone = false;
             draft.logInError = null;
             break;
         case LOGIN_SUCCESS:
+            draft.me = action.data;
             draft.logInDone = true;
-            draft.logInLoading = false;
             break;
         case LOGIN_FAILURE:
             draft.logInError = action.error;
-            draft.logInLoading = false;
+            break;
+        case CHECK_ID_REQUEST:
+            draft.checkIdMessage = null;
+            draft.checkIdError = null;
+            break;
+        case CHECK_ID_SUCCESS:
+            // draft.checkIdMessage = action.data.status;
+            draft.checkIdMessage = "ok";
+            break;
+        case CHECK_ID_FAILURE:
+            draft.checkIdError = action.error;
+            break;
+        case SIGN_UP_REQUEST:
+            draft.signUpDone = false;
+            draft.signUpError = null;
+            break;
+        case SIGN_UP_SUCCESS:
+            draft.signUpDone = true;
+            break;
+        case SIGN_UP_FAILURE:
+            draft.signUpError = action.error;
             break;
         default:
             break;
