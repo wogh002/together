@@ -13,7 +13,7 @@ function MyApp({ Component }) {
       </Head>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <Component />
+          <Component />
       </ThemeProvider>
     </>
   );
