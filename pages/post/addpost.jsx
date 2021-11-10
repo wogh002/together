@@ -1,28 +1,145 @@
-import React from "react";
-import { Form, Button, Select, Radio } from "antd";
+import React, { useState, useCallback, useEffect  } from "react";
+import { useSelector, useDispatch} from "react-redux";
+import { addPost } from "../../reducers/post";
+import { Form, Button, Select, Radio, Input, DatePicker, Space, } from "antd";
 import "antd/dist/antd.css";
-import styled from "styled-components"; 
+import styled from "styled-components";
+import { useRouter } from 'next/router'
+import moment from "moment";
+
 const { Option } = Select;
 const FormContainer = styled.section`
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    form {
-      padding-left: 1rem;
-    }
-    form > div {
-      margin-bottom: 4rem;
-    }
-    label {
-      font-weight: 700;
-    }
-`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  form {
+    padding-left: 1rem;
+  }
+  form > div {
+    margin-bottom: 4rem;
+  }
+  label {
+    font-weight: 700;
+  }
+`;
 const AddPost = () => {
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const router = useRouter()
+  const dispatch = useDispatch();
+
+  // 날짜 시간을 위한 ant design선언
+  function onChange(date, dateString) {
+    console.log(date, dateString);
+  }
+
+  const today = new Date();
+
+  const year = today.getFullYear();
+  const month = ('0' + (today.getMonth() + 1)).slice(-2);
+  const day = ('0' + today.getDate()).slice(-2);
+  const hours = ('0' + today.getHours()).slice(-2); 
+  const minutes = ('0' + today.getMinutes()).slice(-2);
+  const seconds = ('0' + today.getSeconds()).slice(-2); 
+
+  const dateString = year + '-' + month  + '-' + day + ' ' + hours + ':' + minutes  + ':' + seconds;
+
+  console.log(dateString);
+
+  const [date, setDate] = useState(dateString);
+
+  const radioList = ["프로젝트 구함", "스터디 구함"];
+  const [radiobox, setRadiobox] = useState("");
+  const handleRadio = (e) => {
+    console.log(e.target.value);
+    setRadiobox(e.target.value);
   };
+
+  const areaList = ["서울특별시", "경기도"];
+  const [area, setArea] = useState("가능 지역 선택");
+  const handleArea = (e) => {
+    console.log(e);
+    setArea(e);
+  };
+
+  const siguList = ["광명시", "강남구"];
+  const [sigu, setSigu] = useState("가능 지역 선택");
+  const handleSigu = (e) => {
+    console.log(e);
+    setSigu(e);
+  };
+
+  const mainFieldList = ["프론트엔드", "백엔드"];
+  const [mainField, setMainField] = useState("주분야 선택");
+  const handleMainField = (e) => {
+    console.log(e);
+    setMainField(e);
+  };
+
+  const languageList = ["java", "PHP", "javascript", "C#", "기타"];
+  const [language, setLanguage] = useState("언어 선택");
+  const handleLanguage = (e) => {
+    console.log(e);
+    setLanguage(e);
+  };
+
+  const frameworkList = ["spring", "springboot", "react", "vue.js", "기타"];
+  const [framework, setFramework] = useState("프레임워크 선택");
+  const handleFramework = (e) => {
+    console.log(e);
+    setFramework(e);
+  };
+
+  const experienceList = ["0회", "1회", "2~3회", "4~5회", "5회 이상"];
+  const [experience, setExperience] = useState("프로젝트 경험");
+  const handleExperience = (e) => {
+    console.log(e);
+    setExperience(e);
+  };
+
+  const { TextArea } = Input;
+
+  const [intro, setIntro] = useState("");
+  const handleIntro = (e) => {
+    console.log(e.target.value);
+    setIntro(e.target.value);
+  };
+
+  // 구조분해할당 es6
+  const { 
+    addPostLoading, 
+    addPostDone, 
+    mainPosts 
+  } = useSelector(({ post }) => post);
+
+  // useEffect(() => {
+  //   // if (addPostDone) {
+  //   //   setText("");
+  //   // }
+  // }, [addPostDone]);
+
+  const onSubmitForm = () => {
+    const data = {
+      id: mainPosts.length + 1,
+      insertDt: date,
+      postState: radiobox,
+      postCity: area,
+      postGu: sigu,
+      mainField: mainField,
+      lang: language,
+      framework: framework,
+      projectExperience: experience,
+      tel: "",
+      imagePath: "",
+      postContent: intro
+    }
+    dispatch(addPost(data));
+    router.push('/');
+  }
+
+  // const onFinish = (values) => {
+  //   console.log("Success:", values);
+  // };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -32,34 +149,50 @@ const AddPost = () => {
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
-        onFinish={onFinish}
+        onFinish={onSubmitForm}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <Form.Item label="모집선택" name="size" style={{minWidth:400}}>
-          <Radio.Group>
-            <Radio.Button value="프로젝트">프로젝트 모집</Radio.Button>
-            <Radio.Button value="스터디">스터디 모집</Radio.Button>
+        <Form.Item label="작성일자" name="size" style={{ minWidth: 400 }}>
+          <Space direction="vertical">
+            <DatePicker format="YYYY-MM-DD HH:mm:ss" value={moment(date)} disabled />
+          </Space>
+        </Form.Item>
+
+        <Form.Item label="모집선택" name="size" style={{ minWidth: 400 }}>
+          <Radio.Group onChange={handleRadio} value={radiobox} >
+            {
+              radioList.map((item) => (
+                <Radio.Button key={item} value={item}>{item}</Radio.Button>
+              ))
+            }
           </Radio.Group>
         </Form.Item>
+        
         <Form.Item
           label="가능지역 선택"
           hasFeedback
           rules={[{ required: true, message: "Please select your country!" }]}
         >
           <Select
-            placeholder="Please select a country"
-            style={{ width: "100%" }}
+            onChange={handleArea}
+            value={area}
           >
-            <Option value="china">China</Option>
-            <Option value="usa">U.S.A</Option>
+            {
+              areaList.map((item) => (
+                <Option key={item} value={item}>{item}</Option>
+              ))
+            }
           </Select>
           <Select
-            placeholder="Please select a country"
-            style={{ width: "100%" }}
+            onChange={handleSigu}
+            value={sigu}
           >
-            <Option value="china">China</Option>
-            <Option value="usa">U.S.A</Option>
+            {
+              siguList.map((item) => (
+                <Option key={item} value={item}>{item}</Option>
+              ))
+            }
           </Select>
         </Form.Item>
 
@@ -69,54 +202,69 @@ const AddPost = () => {
           rules={[{ required: true, message: "선택" }]}
         >
           <Select
-            placeholder="Please select a country"
-            style={{ width: "100%" }}
+            onChange={handleMainField}
+            value={mainField}
           >
-            <Option value="프론트엔드">프론트엔드</Option>
-            <Option value="백엔드">백엔드</Option>
+            {
+              mainFieldList.map((item) => (
+                <Option key={item} value={item}>{item}</Option>
+              ))
+            }
           </Select>
           <Select
-            placeholder="Please select a country"
-            style={{ width: "100%" }}
+            onChange={handleLanguage}
+            value={language}
           >
-            <Option value="자바">자바</Option>
-            <Option value="파이썬">파이썬</Option>
-            <Option value="PHP">PHP</Option>
-            <Option value="C#">C#</Option>
-            <Option value="기타">기타</Option>
+            {
+              languageList.map((item) => (
+                <Option key={item} value={item}>{item}</Option>
+              ))
+            }
           </Select>
         </Form.Item>
 
         <Form.Item
-          label="프레임워크/경험횟수"
+          label="프레임워크/경험횟수: "
           hasFeedback
           rules={[{ required: true, message: "선택" }]}
         >
           <Select
-            placeholder="Please select a country"
-            style={{ width: "100%" }}
+            onChange={handleFramework}
+            value={framework}
           >
-            <Option value="spring">spring(boot)</Option>
-            <Option value="node">node</Option>
-            <Option value="net">.net</Option>
-            <Option value="react">react</Option>
-            <Option value="vue">vue.js</Option>
-            <Option value="angular">angular</Option>
-            <Option value="기타">기타</Option>
+            {
+              frameworkList.map((item) => (
+                <Option key={item} value={item}>{item}</Option>
+              ))
+            }
           </Select>
           <Select
-            placeholder="Please select a country"
-            style={{ width: "100%" }}
+            onChange={handleExperience}
+            value={experience}
           >
-            <Option value="0">0번</Option>
-            <Option value="3">1~3번</Option>
-            <Option value="5">3~5번</Option>
-            <Option value="5이상">5번 이상</Option>
+            {
+              experienceList.map((item) => (
+                <Option key={item} value={item}>{item}</Option>
+              ))
+            }
           </Select>
         </Form.Item>
 
+        <Form.Item
+          label="자기소개: "
+          hasFeedback
+          rules={[{ required: true, message: "선택" }]}
+        >
+        <TextArea
+          value={intro}
+          onChange={handleIntro}
+          placeholder="Controlled autosize"
+          autoSize={{ minRows: 3, maxRows: 5 }}
+        />
+        </Form.Item>
+
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={addPostLoading} >
             Submit
           </Button>
         </Form.Item>
