@@ -13,7 +13,7 @@ import {
     LOAD_USER_SUCCESS,
     LOAD_USER_FAILURE
 } from '../reducers/user';
-import axios from '../util';
+import axios from '../api/axios';
 const logInAPI = data => {
     return axios.post('/user/auth', data);
 }
@@ -71,7 +71,7 @@ function* signUp(action) {
     }
 }
 function* loadUser() {
-        yield call(loadUserAPI);
+    yield call(loadUserAPI);
     try {
         yield put({
             type: LOAD_USER_SUCCESS,

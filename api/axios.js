@@ -1,7 +1,9 @@
 import axios from "axios";
+// const instance = axios.create({
+//   baseURL: 'http://test.dahun.xyz:9876',
+// });
 
 const instance = axios.create({
-  // 기본적으로 우리가 바라볼 서버의 주소
   baseURL: "http://localhost:4000/",
   headers: {
     "content-type": "application/json;charset=UTF-8",
@@ -24,3 +26,5 @@ export const apis = {
   // 게시물 삭제하기
   delPost: (id) => instance.delete(`/post/${id}`),
 };
+instance.defaults.withCredentials = true;
+export default instance;

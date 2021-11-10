@@ -7,14 +7,10 @@ import { LOAD_POSTS_REQUEST } from "../../reducers/post";
 import PostCard from "./postcard";
 import Head from "next/head";
 import { useRouter } from 'next/router'
-
 const Main = (props) => {
   const dispatch = useDispatch();
   const router = useRouter();
-
   const { mainPosts } = useSelector(({ post }) => post);
-  console.log(mainPosts);
-
   useEffect(() => {
     dispatch({
       type: LOAD_POSTS_REQUEST,

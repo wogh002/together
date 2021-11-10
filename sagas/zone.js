@@ -5,7 +5,7 @@ import {
     ZONE_SUCCESS,
     ZONE_FAILURE
 } from '../reducers/zone';
-import axios from '../util';
+import axios from '../api/axios';
 
 const zoneAPI = () => {
     return axios.get('/api/zone');
