@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Input } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import { Form, BlueBtn, Message } from './index';
+import { Form, BlueBtn, Message,CheckBtn } from './index';
 import ImageUpload from '../../components/upload-img/imageUpload';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
@@ -14,14 +14,12 @@ const TEL_REG_EXP = /^[0-9\b -]{0,13}$/;
 const NICKNAME_REG_EXP = /^[ㄱ-ㅎ가-힣a-z0-9_-]{0,20}$/;
 const Index = () => {
     const router = useRouter();
-
     const dispatch = useDispatch();
     const {
         signUpDone,
         signUpError,
         checkIdMessage,
     } = useSelector(({ user }) => user);
-
     const [imageFile, setImageFile] = useState(null);
     const [idReg, setIdReg] = useState(false);
     const [userId, setUserId] = useState("");
@@ -114,6 +112,19 @@ const Index = () => {
                     회원가입
                 </h1>
                 <ImageUpload setImageFile={setImageFile} />
+                <CheckBtn type="button" onClick={onCheckId}>
+                    Check ID
+                </CheckBtn>
+                {
+                        userId === userIdCheck ? userId &&
+                            <Message color={checkIdMessage === "ok" ? "#4CAF50" : "#D30000"}>
+                                {idReg ? checkIdMessage : "첫문자는 영소문자 -> 글자 수(7~9)"}
+                            </Message>
+                            :
+                            <Message color="#D30000">
+                                Check ID 를 눌러주세요
+                            </Message>
+                }
                 <div>
                     <Input
                         required
@@ -124,19 +135,8 @@ const Index = () => {
                         placeholder="Enter your ID"
                         prefix={<UserOutlined className="site-form-item-icon" />}
                     />
-                    <button type="button" onClick={onCheckId}>
-                        Check ID
-                    </button>
-                    {
-                        userId === userIdCheck ? userId &&
-                            <Message color={checkIdMessage === "ok" ? "#4CAF50" : "#D30000"}>
-                                {idReg ? checkIdMessage : "첫문자는 영소문자 -> 글자 수(7~9)"}
-                            </Message>
-                            :
-                            <Message color="#D30000">
-                                Check ID 를 눌러주세요
-                            </Message>
-                    }
+
+                    
                     <Input
                         required
                         type="text"

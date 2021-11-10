@@ -10,7 +10,6 @@ import LOAD_USER_REQUEST from '../reducers/user';
 const Home = () => {
   const dispatch = useDispatch();
   const { me } = useSelector(({ user }) => user);
-  console.log(me);
   // axios.defaults.headers.common['Authorization'] = getCookie(TOKEN_NAME);
   return (
     <>
@@ -20,26 +19,25 @@ const Home = () => {
     </>
   )
 }
-// export const getServerSideProps = wrapper.getServerSideProps(
-//   (store) =>
-//     async ({ req }) => {
-//       const cookie = req ? req.headers.cookie : '';
-//       axios.defaults.headers.Cookie = '';
-//       if (req && cookie) {
-//         axios.defaults.headers.Cookie = cookie;
-//         store.dispatch({
-//           type: LOAD_USER_REQUEST,
-//         })
-//       }
-//       store.dispatch({
-//         type: ZONE_REQUEST,
-//       });
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      const cookie = req ? req.headers.cookie : '';
+      axios.defaults.headers.Cookie = '';
+      if (req && cookie) {
+        axios.defaults.headers.Cookie = cookie;
+        store.dispatch({
+          type: LOAD_USER_REQUEST,
+        })
+      }
+      store.dispatch({
+        type: ZONE_REQUEST,
+      });
+      // TODO: LOAD_POSTS
+      store.dispatch(END);
+      await store.sagaTask.toPromise();
+    }
 
-//       // TODO: LOAD_POSTS
-//       store.dispatch(END);
-//       await store.sagaTask.toPromise();
-//     }
-
-// );
+);
 export default Home;
 
