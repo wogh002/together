@@ -20,7 +20,7 @@ export const ImageSection = styled.section`
 `
 export const ImageContainer = styled.div`
     margin-bottom: 3rem;
-    img {
+    img { 
       margin: 0 auto;
       display: block;
       max-width: 100%;
