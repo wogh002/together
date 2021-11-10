@@ -14,6 +14,7 @@ const TEL_REG_EXP = /^[0-9\b -]{0,13}$/;
 const NICKNAME_REG_EXP = /^[ㄱ-ㅎ가-힣a-z0-9_-]{0,20}$/;
 const Index = () => {
     const router = useRouter();
+
     const dispatch = useDispatch();
     const {
         signUpDone,
@@ -83,7 +84,8 @@ const Index = () => {
             formData,
             config
         });
-    }
+    };
+
     const onSubmit = (e) => {
         e.preventDefault();
         const { formData, config } = createFormData();
@@ -96,13 +98,15 @@ const Index = () => {
                 }
             })
         }
-    }
+    };
+
     useEffect(() => {
         signUpError && alert(signUpError);
     }, [signUpError]);
     useEffect(() => {
         signUpDone && router.push("/login");
     }, [signUpDone, router]);
+
     return (
         <Form onSubmit={onSubmit}>
             <>

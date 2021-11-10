@@ -2,9 +2,10 @@ import { HYDRATE } from 'next-redux-wrapper';
 import { combineReducers } from 'redux';
 import user from './user';
 // import post from './post';
+import zone from './zone';
 const rootReducer = (state, action) => {
-    // SSR 시 action.type은 HYDRATE 된다.
-    // 그 외의 경우는 default 로 빠짐.
+    // const getServerSideProps = wrapper.getServerSideProps(
+    // 위에 서버사이드 프롭스 실행시키고, 결과는 HYDRATE 로 간다
     switch (action.type) {
         case HYDRATE:
             console.log('HYDRATE', action);
@@ -12,7 +13,7 @@ const rootReducer = (state, action) => {
         default: {
             const combineReducer = combineReducers({
                 user,
-                // post
+                zone
             });
             return combineReducer(state, action);
         }

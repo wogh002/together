@@ -27,6 +27,11 @@ const ImageUpload = ({ setImageFile }) => {
         if (files && files[0]) {
             // const formData = new FormData();
             const originalImage = files[0];
+            console.log(originalImage.size);
+            if (originalImage.size > 1024 * 1024 * 2) {
+                alert('2MB 이하 파일만 등록할 수 있습니다.\n\n' + '현재파일 용량 : ' + (Math.round(originalImage.size / 1024 / 1024 * 100) / 100) + 'MB');
+                return;
+            }
             // const compressedImage = await compressImage(originalImage);
             // formData.append('imageFile', compressedImage);
             // const imageFile = formData.getAll('imageFile')[0];
