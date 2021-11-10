@@ -1,5 +1,5 @@
 import React from 'react';
-import {  PageHeader, Button, } from "antd";
+import { PageHeader, Button, } from "antd";
 import "antd/dist/antd.css";
 
 const Header = (props) => (

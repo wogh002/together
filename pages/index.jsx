@@ -10,9 +10,9 @@ const Home = () => {
     </>
   )
 }
-export const getServerSideProps = wrapper.getServerSideProps((context) => {
-  console.log(context.payload);
-  //dispath --> ex) LOAD_MY_INFO 
-})
+// export const getServerSideProps = wrapper.getServerSideProps((context) => {
+//   console.log(context.payload);
+//   //dispath --> ex) LOAD_MY_INFO 
+// })
 export default Home;
 

@@ -1,9 +1,12 @@
 import React, { useState, useCallback, useEffect  } from "react";
 import { useSelector, useDispatch} from "react-redux";
-import { ADD_POST_REQUEST } from "../../reducers/post";
-import { Form, Button, Select, Radio } from "antd";
+import { addPost } from "../../reducers/post";
+import { Form, Button, Select, Radio, Input, DatePicker, Space, } from "antd";
 import "antd/dist/antd.css";
 import styled from "styled-components";
+import { useRouter } from 'next/router'
+import moment from "moment";
+
 const { Option } = Select;
 const FormContainer = styled.section`
   display: flex;
@@ -22,94 +25,116 @@ const FormContainer = styled.section`
   }
 `;
 const AddPost = () => {
+  const router = useRouter()
   const dispatch = useDispatch();
 
+  // 날짜 시간을 위한 ant design선언
+  function onChange(date, dateString) {
+    console.log(date, dateString);
+  }
+
+  const today = new Date();
+
+  const year = today.getFullYear();
+  const month = ('0' + (today.getMonth() + 1)).slice(-2);
+  const day = ('0' + today.getDate()).slice(-2);
+  const hours = ('0' + today.getHours()).slice(-2); 
+  const minutes = ('0' + today.getMinutes()).slice(-2);
+  const seconds = ('0' + today.getSeconds()).slice(-2); 
+
+  const dateString = year + '-' + month  + '-' + day + ' ' + hours + ':' + minutes  + ':' + seconds;
+
+  console.log(dateString);
+
+  const [date, setDate] = useState(dateString);
+
   const radioList = ["프로젝트 구함", "스터디 구함"];
-  const [Radiobox, setRadiobox] = useState("");
+  const [radiobox, setRadiobox] = useState("");
   const handleRadio = (e) => {
     console.log(e.target.value);
     setRadiobox(e.target.value);
   };
 
   const areaList = ["서울특별시", "경기도"];
-  const [Area, setArea] = useState("가능 지역 선택");
+  const [area, setArea] = useState("가능 지역 선택");
   const handleArea = (e) => {
     console.log(e);
     setArea(e);
   };
 
   const siguList = ["광명시", "강남구"];
-  const [Sigu, setSigu] = useState("가능 지역 선택");
+  const [sigu, setSigu] = useState("가능 지역 선택");
   const handleSigu = (e) => {
     console.log(e);
     setSigu(e);
   };
 
   const mainFieldList = ["프론트엔드", "백엔드"];
-  const [MainField, setMainField] = useState("주분야 선택");
+  const [mainField, setMainField] = useState("주분야 선택");
   const handleMainField = (e) => {
     console.log(e);
     setMainField(e);
   };
 
-  const language = ["spring", "springboot", "react", "vue.js"];
-  const [Language, setLanguage] = useState("언어 선택");
+  const languageList = ["java", "PHP", "javascript", "C#", "기타"];
+  const [language, setLanguage] = useState("언어 선택");
   const handleLanguage = (e) => {
     console.log(e);
     setLanguage(e);
   };
 
-  const framework = ["spring", "springboot", "react", "vue.js"];
-  const [Framework, setFramework] = useState("프레임워크 선택");
+  const frameworkList = ["spring", "springboot", "react", "vue.js", "기타"];
+  const [framework, setFramework] = useState("프레임워크 선택");
   const handleFramework = (e) => {
     console.log(e);
     setFramework(e);
   };
 
-  const experience = ["0회", "1회", "2~3회", "4~5회", "5회 이상"];
-  const [Experience, setExperience] = useState("프로젝트 경험");
+  const experienceList = ["0회", "1회", "2~3회", "4~5회", "5회 이상"];
+  const [experience, setExperience] = useState("프로젝트 경험");
   const handleExperience = (e) => {
     console.log(e);
     setExperience(e);
   };
 
+  const { TextArea } = Input;
+
+  const [intro, setIntro] = useState("");
+  const handleIntro = (e) => {
+    console.log(e.target.value);
+    setIntro(e.target.value);
+  };
+
   // 구조분해할당 es6
-  const { addPostLoading, addPostDone } = useSelector(({ post }) => post);
+  const { 
+    addPostLoading, 
+    addPostDone, 
+    mainPosts 
+  } = useSelector(({ post }) => post);
 
-  useEffect(() => {
-    if (addPostDone) {
-      setText("");
+  // useEffect(() => {
+  //   // if (addPostDone) {
+  //   //   setText("");
+  //   // }
+  // }, [addPostDone]);
+
+  const onSubmitForm = () => {
+    const data = {
+      id: mainPosts.length + 1,
+      insertDt: date,
+      postState: radiobox,
+      postCity: area,
+      postGu: sigu,
+      mainField: mainField,
+      lang: language,
+      framework: framework,
+      projectExperience: experience,
+      tel: "",
+      imagePath: "",
+      postContent: intro
     }
-  }, [addPostDone]);
-
-  const onSubmitForm = useCallback(() => {
-    console.log({
-      data: {
-        postState: Radiobox,
-        postCity: Area,
-        postGu: Sigu,
-        mainField: MainField,
-        lang: Language,
-        framework: Framework,
-        projectExperience: Experience
-      }
-    })
-    // dispatch({
-    //   type: ADD_POST_REQUEST,
-    //   data: {
-    //     postState: Radiobox,
-    //     postCity: Area,
-    //     postGu: Sigu,
-    //     mainField: MainField,
-    //     lang: Language,
-    //     framework: Framework,
-    //     projectExperience: Experience
-    //   }
-    // });
-  }, [Radiobox,Area,Sigu,MainField,Language,Framework,Experience]);
-
-  function TextInput(e, setState){
-    setState(e.target.value);
+    dispatch(addPost(data));
+    router.push('/');
   }
 
   // const onFinish = (values) => {
@@ -128,8 +153,14 @@ const AddPost = () => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
+        <Form.Item label="작성일자" name="size" style={{ minWidth: 400 }}>
+          <Space direction="vertical">
+            <DatePicker format="YYYY-MM-DD HH:mm:ss" value={moment(date)} disabled />
+          </Space>
+        </Form.Item>
+
         <Form.Item label="모집선택" name="size" style={{ minWidth: 400 }}>
-          <Radio.Group value={Radiobox} onChange={handleRadio}>
+          <Radio.Group onChange={handleRadio} value={radiobox} >
             {
               radioList.map((item) => (
                 <Radio.Button key={item} value={item}>{item}</Radio.Button>
@@ -145,7 +176,7 @@ const AddPost = () => {
         >
           <Select
             onChange={handleArea}
-            value={Area}
+            value={area}
           >
             {
               areaList.map((item) => (
@@ -155,7 +186,7 @@ const AddPost = () => {
           </Select>
           <Select
             onChange={handleSigu}
-            value={Sigu}
+            value={sigu}
           >
             {
               siguList.map((item) => (
@@ -170,10 +201,9 @@ const AddPost = () => {
           hasFeedback
           rules={[{ required: true, message: "선택" }]}
         >
-          <input type="text" onChange={(e) => TextInput(e, setMainField)} />
           <Select
             onChange={handleMainField}
-            value={MainField}
+            value={mainField}
           >
             {
               mainFieldList.map((item) => (
@@ -183,10 +213,10 @@ const AddPost = () => {
           </Select>
           <Select
             onChange={handleLanguage}
-            value={Language}
+            value={language}
           >
             {
-              language.map((item) => (
+              languageList.map((item) => (
                 <Option key={item} value={item}>{item}</Option>
               ))
             }
@@ -200,24 +230,37 @@ const AddPost = () => {
         >
           <Select
             onChange={handleFramework}
-            value={Framework}
+            value={framework}
           >
             {
-              framework.map((item) => (
+              frameworkList.map((item) => (
                 <Option key={item} value={item}>{item}</Option>
               ))
             }
           </Select>
           <Select
             onChange={handleExperience}
-            value={Experience}
+            value={experience}
           >
             {
-              experience.map((item) => (
+              experienceList.map((item) => (
                 <Option key={item} value={item}>{item}</Option>
               ))
             }
           </Select>
+        </Form.Item>
+
+        <Form.Item
+          label="자기소개: "
+          hasFeedback
+          rules={[{ required: true, message: "선택" }]}
+        >
+        <TextArea
+          value={intro}
+          onChange={handleIntro}
+          placeholder="Controlled autosize"
+          autoSize={{ minRows: 3, maxRows: 5 }}
+        />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useHistory } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Divider, Row, Col, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
@@ -6,9 +6,11 @@ import "antd/dist/antd.css";
 import { LOAD_POSTS_REQUEST } from "../../reducers/post";
 import PostCard from "./postcard";
 import Head from "next/head";
+import { useRouter } from 'next/router'
 
 const Main = (props) => {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const { mainPosts } = useSelector(({ post }) => post);
   console.log(mainPosts);
@@ -17,7 +19,7 @@ const Main = (props) => {
     dispatch({
       type: LOAD_POSTS_REQUEST,
     });
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -29,13 +31,15 @@ const Main = (props) => {
       <Row gutter={8}>
         {
           mainPosts && mainPosts.map((item) => {  
-            return <Col span={6} order={4} xs={24} md={6} key={item.postId} >
+            return <Col span={6} order={4} xs={24} md={6} key={item.id} >
               <PostCard post={item} />
               </Col>
           })
         }
       </Row>
-        <Button type="primary" shape="circle" icon={<PlusOutlined />} />
+        <Button type="primary" shape="circle" icon={<PlusOutlined />} size="large" style={{position: 'fixed', right:'30px', bottom:'30px'}} onClick={()=>{
+          router.push('/post/addpost')
+        }}/>
     </>
   );
 };
