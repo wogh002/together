@@ -14,6 +14,7 @@ import {
     LOAD_USER_FAILURE
 } from '../reducers/user';
 import axios from '../api/axios';
+import { getCookie , TOKEN_NAME} from '../util/cookie';
 const logInAPI = data => {
     return axios.post('/user/auth', data);
 }
@@ -71,10 +72,13 @@ function* signUp(action) {
     }
 }
 function* loadUser() {
-    yield call(loadUserAPI);
+    // axios.defaults.headers.common['Authorization'] = action.data;
+    const result = yield call(loadUserAPI);
+    console.log(result);
     try {
         yield put({
             type: LOAD_USER_SUCCESS,
+            data: result.data,
         });
     } catch (error) {
         yield put({

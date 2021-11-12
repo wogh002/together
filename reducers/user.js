@@ -36,7 +36,8 @@ const reducer = (state = initalState, action) => produce(state, draft => {
             draft.me = {
                 ...action.data,
             };
-            setCookie(TOKEN_NAME, action.data.headers.authorization, { path: "/" });
+            localStorage.setItem('aaa',action.data.headers.authorization);
+            // setCookie(TOKEN_NAME, action.data.headers.authorization, { path: "/" });
             draft.logInMessage = action.data.message;
             draft.logInDone = true;
             break;
