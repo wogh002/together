@@ -11,11 +11,11 @@ const Main = (props) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { mainPosts } = useSelector(({ post }) => post);
-  useEffect(() => {
-    dispatch({
-      type: LOAD_POSTS_REQUEST,
-    });
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: LOAD_POSTS_REQUEST,
+  //   });
+  // }, [dispatch]);
 
   return (
     <>

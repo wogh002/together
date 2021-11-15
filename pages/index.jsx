@@ -9,7 +9,6 @@ import { LOAD_USER_REQUEST } from '../reducers/user';
 import { getCookie, setCookie, TOKEN_NAME } from '../util/cookie';
 const Home = () => {
   const { me } = useSelector(({ user }) => user);
-  console.log(me);
   const dispatch = useDispatch();
   //   setCookie(TOKEN_NAME, action.data.headers.authorization, { path: "/" });
   // axios.defaults.headers.common['Authorization'] = getCookie(TOKEN_NAME);
@@ -25,7 +24,7 @@ const Home = () => {
   return (
     <>
       <Layout>
-        <main>gogogo</main>
+        <main>{me && me.userId}</main>
       </Layout>
     </>
   )
@@ -33,6 +32,7 @@ const Home = () => {
 // export const getServerSideProps = wrapper.getServerSideProps(
 //   (store) =>
 //     async ({ req }) => {
+//       console.log(req.headers.cookie);
 //       // setCookie(TOKEN_NAME, req.headers.cookie, { path: "/" });
 //       // req.headers.cookie.slice(8, req.headers.cookie.length) : '';
 //       // const TOKEN = req ? typeof window !== "undefined" && window.localStorage.getItem('aaa') : "";

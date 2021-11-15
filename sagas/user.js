@@ -72,9 +72,7 @@ function* signUp(action) {
     }
 }
 function* loadUser() {
-    // axios.defaults.headers.common['Authorization'] = action.data;
     const result = yield call(loadUserAPI);
-    console.log(result);
     try {
         yield put({
             type: LOAD_USER_SUCCESS,
