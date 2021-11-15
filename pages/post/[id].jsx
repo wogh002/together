@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { DETAIL_POST_REQUEST, editPost } from "../../reducers/post";
+import { editPost } from "../../reducers/post";
 import { Form, Button, Select, Radio, Input, Space, DatePicker } from "antd";
 import "antd/dist/antd.css";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import moment from "moment";
-import { detailPost } from "../../reducers/post";
 const { Option } = Select;
 const FormContainer = styled.section`
   display: flex;
@@ -41,6 +40,7 @@ const EditPost = (props) => {
   const postContents = mainPosts.filter((item) => item.id === Number(id));
   const postContent = postContents[0];
 
+  const [date, setDate] = useState("");
   const radioList = ["프로젝트 구함", "스터디 구함"];
   const [radiobox, setRadiobox] = useState("");
   const handleRadio = (e) => {
@@ -101,7 +101,7 @@ const EditPost = (props) => {
   const onSubmitForm = () => {
     const data = {
       id,
-      insertDt: "",
+      insertDt: date,
       postState: radiobox,
       postCity: area,
       postGu: sigu,
@@ -113,7 +113,8 @@ const EditPost = (props) => {
       imagePath: "",
       postContent: intro,
     };
-    dispatch(editPost(data));
+    dispatch(editPost( data ));
+    console.log(data);
     router.push("/");
   };
 

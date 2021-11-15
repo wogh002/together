@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Card, Modal, Button } from "antd";
 import { CardForm, CardItem } from "./index";
 import { useRouter } from "next/router";
 import "antd/dist/antd.css";
 import styled from "styled-components";
+import { deletePost } from "../../reducers/post";
 
 const ButtonWrap = styled.div`
   text-align: right;
@@ -11,6 +13,8 @@ const ButtonWrap = styled.div`
 
 const PostCard = (props) => {
   const router = useRouter();
+  const { id } = router.query;
+  const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalText, setModalText] = useState("Content of the modal");
@@ -70,7 +74,11 @@ const PostCard = (props) => {
               >
                 수정
               </Button>
-              <Button padding="0">삭제</Button>
+              <Button padding="0" onClick={() => {
+                  console.log(props.post.id);
+                  dispatch(deletePost(props.post.id));
+                  router.push('/');
+                }}>삭제</Button>
             </ButtonWrap>
           </div>
         </Modal>

@@ -7,12 +7,13 @@ export const initialState = {
   loadPostsDone: false,
   loadPostsError: null,
   addPostDone: false,
-  addPostsError: null,
+  addPostError: null,
   editPostDone: false,
   editPostError: null,
   detailPostDone: false,  
   detailPostError: null,
-  addPostError: null,
+  deletePostDone: false,
+  deletePostError: null,
   hasMorePosts: null,
   // removePostLoading: false,
   // removePostDone: false,
@@ -35,9 +36,9 @@ export const DETAIL_POST_REQUEST = "DETAIL_POST_REQUEST";
 export const DETAIL_POST_SUCCESS = "DETAIL_POST_SUCCESS";
 export const DETAIL_POST_FAILURE = "DETAIL_POST_FAILURE";
 
-// export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
-// export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
-// export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
+export const DELETE_POST_REQUEST = 'DELETE_POST_REQUEST';
+export const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS';
+export const DELETE_POST_FAILURE = 'DELETE_POST_FAILURE';
 
 // export const generateDummyPost = (number) => Array(number).fill().map(() => ({
 //     postId: 1,
@@ -72,6 +73,11 @@ export const editPost = (data) => ({
 
 export const detailPost = (data) => ({
   type: DETAIL_POST_REQUEST,
+  data,
+});
+
+export const deletePost = (data) => ({
+  type: DELETE_POST_REQUEST,
   data,
 });
 
@@ -129,7 +135,6 @@ const reducer = (state = initialState, action) =>
         break;
       case EDIT_POST_SUCCESS:
         draft.editPostDone = true;
-        draft.mainPosts.unshift(action.data);
         break;
       case EDIT_POST_FAILURE:
         draft.editPostError = action.error;
@@ -145,6 +150,17 @@ const reducer = (state = initialState, action) =>
       case DETAIL_POST_FAILURE:
         draft.detailPostError = action.error;
         break;
+      case DELETE_POST_REQUEST:
+        draft.deletePostDone = false;
+        draft.deletePostError = null;
+        break;
+      case DELETE_POST_SUCCESS:
+        draft.deletePostDone = true;
+        draft.mainPosts = action.data.concat(draft.mainPosts);
+        break;
+      case DELETE_POST_FAILURE:
+        draft.deletePostError = action.error;
+        break;  
       default:
         break;
     }
