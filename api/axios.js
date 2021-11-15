@@ -1,15 +1,8 @@
 import axios from "axios";
-// const instance = axios.create({
-//   baseURL: 'http://test.dahun.xyz:9876',
-// });
-
 const instance = axios.create({
-  baseURL: "http://localhost:4000/",
-  headers: {
-    "content-type": "application/json;charset=UTF-8",
-    accept: "application/json",
-  },
+  baseURL: 'http://test.dahun.xyz:9876',
 });
+
 
 export const apis = {
   // 전제 게시물 불러오기
@@ -26,5 +19,15 @@ export const apis = {
   // 게시물 삭제하기
   deletePost: (id) => instance.delete(`/post/${id}`),
 };
+
+// const instance = axios.create({
+//   baseURL: "http://localhost:4000/",
+//   headers: {
+//     "content-type": "application/json;charset=UTF-8",
+//     accept: "application/json",
+//   },
+// });
+
+
 instance.defaults.withCredentials = true;
 export default instance;

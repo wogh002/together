@@ -10,7 +10,7 @@ export const initialState = {
   addPostError: null,
   editPostDone: false,
   editPostError: null,
-  detailPostDone: false,
+  detailPostDone: false,  
   detailPostError: null,
   deletePostDone: false,
   deletePostError: null,
