@@ -6,4 +6,4 @@ const nextConfig = {
 };
 
 // export default nextConfig; 11/9일 SyntaxError: Unexpected token 'export'오류로 수정
-module.exports = nextConfig
+module.exports = nextConfig;
