@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { Divider, Row, Col, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
-import { LOAD_POSTS_REQUEST } from "../../reducers/post";
 import PostCard from "./postcard";
 import Head from "next/head";
 import { useRouter } from 'next/router'

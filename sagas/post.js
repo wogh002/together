@@ -19,23 +19,22 @@ import {
 } from "../reducers/post";
 import { apis } from "../api/axios";
 
-function loadPostsAPI() {
-  return apis.getPost();
+function loadPostsAPI(data) {
+  return apis.getPost(data);
 }
 
-function* loadPosts() {
+function* loadPosts(action) {
   try {
-    const result = yield call(loadPostsAPI);
+    const result = yield call(loadPostsAPI,action.data);
     console.log(result.data);
     yield put({
       type: LOAD_POSTS_SUCCESS,
       data: result.data,
     });
   } catch (err) {
-    console.error(err);
     yield put({
       type: LOAD_POSTS_FAILURE,
-      data: err.response.data,
+      data: err.response,
     });
   }
 }

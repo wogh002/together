@@ -1,7 +1,6 @@
 import produce from "immer";
 
 export const initialState = {
-  // ]
   mainPosts: [],
   imagePaths: [],
   loadPostsDone: false,
@@ -40,26 +39,10 @@ export const DELETE_POST_REQUEST = 'DELETE_POST_REQUEST';
 export const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS';
 export const DELETE_POST_FAILURE = 'DELETE_POST_FAILURE';
 
-// export const generateDummyPost = (number) => Array(number).fill().map(() => ({
-//     postId: 1,
-//     insertDt: "insertDt",
-//     postState: "postState",
-//     postCity: "postCity",
-//     postGu: "postGu",
-//     mainField: "mainField",
-//     lang: "lang",
-//     framework: "프레임워크 : framework",
-//     projectExperience: "프로젝트 경험: 1회",
-//     tel: "tel",
-//     imagePath: "imagePath",
-//     postContent: "postContent",
-// }));
-
-// 리덕스 ->> 상태관리도구 > . <
-export const loadPost = (data) => ({
-  type: LOAD_POSTS_REQUEST,
-  data,
-});
+// export const loadPost = (data) => ({
+//   type: LOAD_POSTS_REQUEST,
+//   data,
+// });
 
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
@@ -112,7 +95,7 @@ const reducer = (state = initialState, action) =>
         break;
       case LOAD_POSTS_SUCCESS:
         draft.loadPostsDone = true;
-        draft.mainPosts = action.data.concat(draft.mainPosts);
+        draft.mainPosts = action.data.content.concat(draft.mainPosts);
         // draft.hasMorePosts = draft.mainPosts.length < 50;
         break;
       case LOAD_POSTS_FAILURE:

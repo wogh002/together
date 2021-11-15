@@ -156,7 +156,6 @@ const AddPost = () => {
   const onSubmitForm = (e) => {
     e.preventDefault();
     const { formData, config } = createFormData();
-    // if (userId === userIdCheck && password === passwordCheck && imageFile) {
       dispatch({
         type: ADD_POST_REQUEST,
         data: {
@@ -164,7 +163,6 @@ const AddPost = () => {
           config,
         },
       });
-    // }
     router.push("/");
   };
 
