@@ -13,6 +13,9 @@ import {
   DETAIL_POST_REQUEST,
   DETAIL_POST_SUCCESS,
   DETAIL_POST_FAILURE,
+  DELETE_POST_REQUEST,
+  DELETE_POST_SUCCESS,
+  DELETE_POST_FAILURE,
 } from "../reducers/post";
 import { apis } from "../api/axios";
 
@@ -68,7 +71,6 @@ function editPostAPI(data) {
 function* editPost(action) {
   try {
     const result = yield call(editPostAPI, action.data);
-    console.log(result);
     yield put({
       type: EDIT_POST_SUCCESS,
       data: result,
@@ -104,6 +106,28 @@ function* detailPost(action) {
   }
 }
 
+
+function deletePostAPI(data) {
+  return apis.deletePost(data);
+}
+
+function* deletePost(action) {
+  console.log(action.data);
+  try {
+    const result = yield call(deletePostAPI, action.data);
+    console.log(result);
+    yield put({
+      type: DELETE_POST_SUCCESS,
+      data: result,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: DELETE_POST_FAILURE,
+      data: err.response.data,
+    });
+  }
+}
 function* watchLoadPosts() {
   yield takeLatest(LOAD_POSTS_REQUEST, loadPosts);
 }
@@ -120,6 +144,10 @@ function* watchDetailPost() {
   yield takeLatest(DETAIL_POST_REQUEST, detailPost);
 }
 
+function* watchDeletePost() {
+  yield takeLatest(DELETE_POST_REQUEST, deletePost);
+}
+
 export default function* userSaga() {
   yield all(
     [ 
@@ -127,6 +155,7 @@ export default function* userSaga() {
       fork(watchLoadPosts),
       fork(watchEditPost),
       fork(watchDetailPost),
+      fork(watchDeletePost),
     ]
   );
 }

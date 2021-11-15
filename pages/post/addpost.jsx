@@ -1,10 +1,10 @@
-import React, { useState, useCallback, useEffect  } from "react";
-import { useSelector, useDispatch} from "react-redux";
-import { addPost } from "../../reducers/post";
-import { Form, Button, Select, Radio, Input, DatePicker, Space, } from "antd";
+import React, { useState, useCallback, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+// import FileUpload from "../../components/upload-file/fileUpload";
+import { Form, Button, Select, Radio, Input, DatePicker, Space } from "antd";
 import "antd/dist/antd.css";
 import styled from "styled-components";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 import moment from "moment";
 
 const { Option } = Select;
@@ -25,8 +25,13 @@ const FormContainer = styled.section`
   }
 `;
 const AddPost = () => {
-  const router = useRouter()
+  const router = useRouter();
   const dispatch = useDispatch();
+
+  // 구조분해할당 es6
+  const { addPostLoading, addPostDone, mainPosts } = useSelector(
+    ({ post }) => post
+  );
 
   // 날짜 시간을 위한 ant design선언
   function onChange(date, dateString) {
@@ -36,17 +41,29 @@ const AddPost = () => {
   const today = new Date();
 
   const year = today.getFullYear();
-  const month = ('0' + (today.getMonth() + 1)).slice(-2);
-  const day = ('0' + today.getDate()).slice(-2);
-  const hours = ('0' + today.getHours()).slice(-2); 
-  const minutes = ('0' + today.getMinutes()).slice(-2);
-  const seconds = ('0' + today.getSeconds()).slice(-2); 
+  const month = ("0" + (today.getMonth() + 1)).slice(-2);
+  const day = ("0" + today.getDate()).slice(-2);
+  const hours = ("0" + today.getHours()).slice(-2);
+  const minutes = ("0" + today.getMinutes()).slice(-2);
+  const seconds = ("0" + today.getSeconds()).slice(-2);
 
-  const dateString = year + '-' + month  + '-' + day + ' ' + hours + ':' + minutes  + ':' + seconds;
+  const dateString =
+    year +
+    "-" +
+    month +
+    "-" +
+    day +
+    " " +
+    hours +
+    ":" +
+    minutes +
+    ":" +
+    seconds;
 
   console.log(dateString);
 
   const [date, setDate] = useState(dateString);
+  const [File, setFile] = useState(null);
 
   const radioList = ["프로젝트 구함", "스터디 구함"];
   const [radiobox, setRadiobox] = useState("");
@@ -105,37 +122,51 @@ const AddPost = () => {
     setIntro(e.target.value);
   };
 
-  // 구조분해할당 es6
-  const { 
-    addPostLoading, 
-    addPostDone, 
-    mainPosts 
-  } = useSelector(({ post }) => post);
-
   // useEffect(() => {
   //   // if (addPostDone) {
   //   //   setText("");
   //   // }
   // }, [addPostDone]);
 
-  const onSubmitForm = () => {
-    const data = {
-      id: mainPosts.length + 1,
-      insertDt: date,
-      postState: radiobox,
-      postCity: area,
-      postGu: sigu,
-      mainField: mainField,
-      lang: language,
-      framework: framework,
-      projectExperience: experience,
-      tel: "",
-      imagePath: "",
-      postContent: intro
-    }
-    dispatch(addPost(data));
-    router.push('/');
-  }
+  const createFormData = () => {
+    const formData = new FormData();
+    formData.append("postId", postId);
+    formData.append("insertDt", date);
+    formData.append("postState", radiobox);
+    formData.append("postCity", area);
+    formData.append("postGu", sigu);
+    formData.append("mainField", mainField);
+    formData.append("lang", language);
+    formData.append("framework", framework);
+    formData.append("projectExperience", experience);
+    formData.append("tel", "");
+    formData.append("filePath", "");
+    formData.append("postContent", intro);
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    };
+    return {
+      formData,
+      config,
+    };
+  };
+
+  const onSubmitForm = (e) => {
+    e.preventDefault();
+    const { formData, config } = createFormData();
+    // if (userId === userIdCheck && password === passwordCheck && imageFile) {
+      dispatch({
+        type: ADD_POST_REQUEST,
+        data: {
+          formData,
+          config,
+        },
+      });
+    // }
+    router.push("/");
+  };
 
   // const onFinish = (values) => {
   //   console.log("Success:", values);
@@ -153,46 +184,45 @@ const AddPost = () => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
+
         <Form.Item label="작성일자" name="size" style={{ minWidth: 400 }}>
           <Space direction="vertical">
-            <DatePicker format="YYYY-MM-DD HH:mm:ss" value={moment(date)} disabled />
+            <DatePicker
+              format="YYYY-MM-DD HH:mm:ss"
+              value={moment(date)}
+              disabled
+            />
           </Space>
         </Form.Item>
 
         <Form.Item label="모집선택" name="size" style={{ minWidth: 400 }}>
-          <Radio.Group onChange={handleRadio} value={radiobox} >
-            {
-              radioList.map((item) => (
-                <Radio.Button key={item} value={item}>{item}</Radio.Button>
-              ))
-            }
+          <Radio.Group onChange={handleRadio} value={radiobox}>
+            {radioList.map((item) => (
+              <Radio.Button key={item} value={item}>
+                {item}
+              </Radio.Button>
+            ))}
           </Radio.Group>
         </Form.Item>
-        
+
         <Form.Item
           label="가능지역 선택"
           hasFeedback
           rules={[{ required: true, message: "Please select your country!" }]}
         >
-          <Select
-            onChange={handleArea}
-            value={area}
-          >
-            {
-              areaList.map((item) => (
-                <Option key={item} value={item}>{item}</Option>
-              ))
-            }
+          <Select onChange={handleArea} value={area}>
+            {areaList.map((item) => (
+              <Option key={item} value={item}>
+                {item}
+              </Option>
+            ))}
           </Select>
-          <Select
-            onChange={handleSigu}
-            value={sigu}
-          >
-            {
-              siguList.map((item) => (
-                <Option key={item} value={item}>{item}</Option>
-              ))
-            }
+          <Select onChange={handleSigu} value={sigu}>
+            {siguList.map((item) => (
+              <Option key={item} value={item}>
+                {item}
+              </Option>
+            ))}
           </Select>
         </Form.Item>
 
@@ -201,25 +231,19 @@ const AddPost = () => {
           hasFeedback
           rules={[{ required: true, message: "선택" }]}
         >
-          <Select
-            onChange={handleMainField}
-            value={mainField}
-          >
-            {
-              mainFieldList.map((item) => (
-                <Option key={item} value={item}>{item}</Option>
-              ))
-            }
+          <Select onChange={handleMainField} value={mainField}>
+            {mainFieldList.map((item) => (
+              <Option key={item} value={item}>
+                {item}
+              </Option>
+            ))}
           </Select>
-          <Select
-            onChange={handleLanguage}
-            value={language}
-          >
-            {
-              languageList.map((item) => (
-                <Option key={item} value={item}>{item}</Option>
-              ))
-            }
+          <Select onChange={handleLanguage} value={language}>
+            {languageList.map((item) => (
+              <Option key={item} value={item}>
+                {item}
+              </Option>
+            ))}
           </Select>
         </Form.Item>
 
@@ -228,44 +252,46 @@ const AddPost = () => {
           hasFeedback
           rules={[{ required: true, message: "선택" }]}
         >
-          <Select
-            onChange={handleFramework}
-            value={framework}
-          >
-            {
-              frameworkList.map((item) => (
-                <Option key={item} value={item}>{item}</Option>
-              ))
-            }
+          <Select onChange={handleFramework} value={framework}>
+            {frameworkList.map((item) => (
+              <Option key={item} value={item}>
+                {item}
+              </Option>
+            ))}
           </Select>
-          <Select
-            onChange={handleExperience}
-            value={experience}
-          >
-            {
-              experienceList.map((item) => (
-                <Option key={item} value={item}>{item}</Option>
-              ))
-            }
+          <Select onChange={handleExperience} value={experience}>
+            {experienceList.map((item) => (
+              <Option key={item} value={item}>
+                {item}
+              </Option>
+            ))}
           </Select>
         </Form.Item>
+
+        <Form.Item
+          label="포트폴리오 및 파일: "
+          hasFeedback
+          rules={[{ required: true, message: "선택" }]}
+        >        </Form.Item>
+        {/* <FileUpload setUploadFile={setUploadFile} /> */}
+
 
         <Form.Item
           label="자기소개: "
           hasFeedback
           rules={[{ required: true, message: "선택" }]}
         >
-        <TextArea
-          value={intro}
-          onChange={handleIntro}
-          placeholder="Controlled autosize"
-          autoSize={{ minRows: 3, maxRows: 5 }}
-        />
+          <TextArea
+            value={intro}
+            onChange={handleIntro}
+            placeholder="Controlled autosize"
+            autoSize={{ minRows: 3, maxRows: 5 }}
+          />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit" loading={addPostLoading} >
-            Submit
+          <Button type="primary" htmlType="submit" loading={addPostLoading}>
+            작성
           </Button>
         </Form.Item>
       </Form>

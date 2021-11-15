@@ -21,10 +21,10 @@ export const apis = {
   // 게시물 수정하기
   editPost: (id, contents) => instance.put(`/post/${id}`, contents),
   // 현재 게시글??? (API추가 후 추후 정리 : enddate랑 같이 인자값으로 받아서 삼항연산자로 요청url이 변경되게)
-  detailPost: (id) => { console.log("aaaaaaaaaaaa" + id)},
+  detailPost: (id) => instance.get(`/post/${id}`),
   // instance.get(`/post/${id}`),
   // 게시물 삭제하기
-  delPost: (id) => instance.delete(`/post/${id}`),
+  deletePost: (id) => instance.delete(`/post/${id}`),
 };
 instance.defaults.withCredentials = true;
 export default instance;
