@@ -34,11 +34,11 @@ const Header = () => {
                     로그아웃
                 </Button>
                     :
-                    <Button key="1" type="primary" onClick={onClickLogin}>
+                    <Button key="2" type="primary" onClick={onClickLogin}>
                         로그인
                     </Button>,
                 !me &&
-                <Button key="2" onClick={onClickSignup}>회원가입</Button>,
+                <Button key="3" onClick={onClickSignup}>회원가입</Button>,
             ]}
         />
     )

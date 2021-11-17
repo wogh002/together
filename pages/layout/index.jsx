@@ -4,6 +4,7 @@ import "antd/dist/antd.css";
 import styled from "styled-components";
 import Main from "../post/main"
 import { useDispatch, useSelector } from 'react-redux';
+
 export const GhostWrapper = styled.div`
   margin: 0px;
   padding: 5px;
@@ -18,14 +19,18 @@ const SearchBar = styled.div`
 const { Content } = Layout;
 const { Option } = Select;
 
-const Index = ({ children }) => {
+const Index = () => {
   const { zone } = useSelector(({ zone }) => zone);
   const dispatch = useDispatch();
-  console.log(zone);
-
+  const [guName, setGuName] = useState("Gu");
+  // 토글
   const [click, setClick] = useState(true);
-  const [value, setValue] = React.useState(1);
+  // 프로젝트 구함, 스터디 구함
+  const [value, setValue] = useState(1);
+  const [gu, setGu] = useState([]);
+
   const onChange = e => {
+    // 프로젝트 구함, 스터디 구함
     console.log('radio checked', e.target.value);
     setValue(e.target.value);
   };
@@ -33,6 +38,46 @@ const Index = ({ children }) => {
   const ToggleSearchbar = useCallback(() => {
     setClick((prev) => !prev);
   }, []);
+
+  const onChangeCity = useCallback((e) => {
+    // city 바뀔 때 마다 dispatch API 서버요청
+    switch (e) {
+      case zone[0].city: setGu(zone[0].gu);
+        break;
+      case zone[1].city: setGu(zone[1].gu);
+        break;
+      case zone[2].city: setGu(zone[2].gu);
+        break;
+      case zone[3].city: setGu(zone[3].gu);
+        break;
+      case zone[4].city: setGu(zone[4].gu);
+        break;
+      case zone[5].city: setGu(zone[5].gu);
+        break;
+      case zone[6].city: setGu(zone[6].gu);
+        break;
+      case zone[7].city: setGu(zone[7].gu);
+        break;
+      case zone[8].city: setGu(zone[8].gu);
+        break;
+      case zone[9].city: setGu(zone[9].gu);
+        break;
+      case zone[10].city: setGu(zone[10].gu);
+        break;
+      case zone[11].city: setGu(zone[11].gu);
+        break;
+      case zone[12].city: setGu(zone[12].gu);
+        break;
+      case zone[13].city: setGu(zone[13].gu);
+        break;
+      case zone[14].city: setGu(zone[14].gu);
+        break;
+      case zone[15].city: setGu(zone[15].gu);
+        break;
+      case zone[16].city: setGu(zone[16].gu);
+        break;
+    }
+  }, [zone]);
   return (
     <>
       <div>
@@ -49,22 +94,26 @@ const Index = ({ children }) => {
                     </Button>
                   </div>
                   <div style={{ display: "flex", padding: '0px 10px' }}>
-                    <Select defaultValue="City" className="select-before" style={{ width: '15%' }}>
+                    <Select defaultValue="City" className="select-before" style={{ width: '15%' }} onChange={onChangeCity}>
                       {
-                        zone.map(item => (
-                          <>
-                            <Option value={item.city}>
-                              {item.city}
-                            </Option>
-                          </>
+                        zone.map((item, index) => (
+                          <Option key={index} value={item.city} >
+                            {item.city}
+                          </Option>
                         )
                         )
                       }
                     </Select>
 
-                    <Select defaultValue="Gu" className="select-before" style={{ width: '15%' }}>
-                      <Option value="구로구">구로구</Option>
-                      <Option value="광명시">광명시</Option>
+                    <Select defaultValue={guName} className="select-before" style={{ width: '15%' }}>
+                      {
+                        gu.map((item, index) => (
+                          <Option key={index} value={item} >
+                            {item}
+                          </Option>
+                        )
+                        )
+                      }
                     </Select>
 
                     <Select defaultValue="Position" className="select-before" style={{ width: '15%' }}>

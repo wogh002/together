@@ -14,8 +14,6 @@ const Home = () => {
   useEffect(() => {
     if (localStorage.getItem(NAME)) {
       axios.defaults.headers.common['Authorization'] = localStorage.getItem(NAME);
-      // console.log(axios.defaults.headers.common['Authorization']);
-      // console.log(localStorage.getItem(NAME));
       dispatch({
         type: LOAD_USER_REQUEST,
       });
@@ -25,7 +23,6 @@ const Home = () => {
   return (
     <>
       <Layout>
-        <main>{me && me.userId}</main>
       </Layout>
     </>
   )

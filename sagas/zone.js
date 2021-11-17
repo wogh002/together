@@ -1,5 +1,4 @@
 import { all, fork, put, takeLatest, call } from 'redux-saga/effects';
-import { getCookie, TOKEN_NAME } from "../util/cookie";
 import {
     ZONE_REQUEST,
     ZONE_SUCCESS,
@@ -13,7 +12,6 @@ const zoneAPI = () => {
 
 function* zone() {
     const result = yield call(zoneAPI);
-    console.log(result);
     try {
         yield put({
             type: ZONE_SUCCESS,
