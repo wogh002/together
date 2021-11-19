@@ -8,10 +8,15 @@ export const apis = {
   getPost: ({ page, size }) => instance.get(`/posts/`, {
     params: { page, size }
   }),
-  
+  loadPostsCity: ({ city, page, size }) => instance.get(`/posts/city/${city}`, {
+    params: { page, size }
+  }),
+  loadPostsCityAndGu: ({ city, gu, page, size }) => instance.get(`/posts/city/${city}/gu/${gu}`, {
+    params: { page, size }
+  }),
 };
 
-instance.defaults.withCredentials = true;
+// instance.defaults.withCredentials = true;
 export default instance;
 
 // const instance = axios.create({

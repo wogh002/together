@@ -16,6 +16,12 @@ import {
   DELETE_POST_REQUEST,
   DELETE_POST_SUCCESS,
   DELETE_POST_FAILURE,
+  LOAD_POSTS_CITY_REQUEST,
+  LOAD_POSTS_CITY_SUCCESS,
+  LOAD_POSTS_CITY_FAILURE,
+  LOAD_POSTS_CITY_GU_REQUEST,
+  LOAD_POSTS_CITY_GU_SUCCESS,
+  LOAD_POSTS_CITY_GU_FAILURE,
 } from "../reducers/post";
 import { apis } from "../api/axios";
 
@@ -25,8 +31,7 @@ function loadPostsAPI(data) {
 
 function* loadPosts(action) {
   try {
-    const result = yield call(loadPostsAPI,action.data);
-    console.log(result.data);
+    const result = yield call(loadPostsAPI, action.data);
     yield put({
       type: LOAD_POSTS_SUCCESS,
       data: result.data,
@@ -40,7 +45,6 @@ function* loadPosts(action) {
 }
 
 function addPostAPI(data) {
-  console.log(data);
   return apis.addPost(data);
 }
 
@@ -48,7 +52,6 @@ function* addPost(action) {
   try {
     const result = yield call(addPostAPI, action.data);
     // const result = action.data;
-    console.log(result);
     yield put({
       type: ADD_POST_SUCCESS,
       data: result,
@@ -63,7 +66,6 @@ function* addPost(action) {
 }
 
 function editPostAPI(data) {
-  console.log(data);
   return apis.editPost(data);
 }
 
@@ -88,7 +90,6 @@ function detailPostAPI(data) {
 }
 
 function* detailPost(action) {
-  console.log(action.data);
   try {
     const result = yield call(detailPostAPI, action.data);
     console.log(result);
@@ -111,7 +112,6 @@ function deletePostAPI(data) {
 }
 
 function* deletePost(action) {
-  console.log(action.data);
   try {
     const result = yield call(deletePostAPI, action.data);
     console.log(result);
@@ -120,13 +120,50 @@ function* deletePost(action) {
       data: result,
     });
   } catch (err) {
-    console.error(err);
     yield put({
       type: DELETE_POST_FAILURE,
       data: err.response.data,
     });
   }
 }
+function loadPostsCityAPI(data) {
+  return apis.loadPostsCity(data);
+}
+
+function* loadPostsCity(action) {
+  try {
+    const result = yield call(loadPostsCityAPI, action.data);
+    yield put({
+      type: LOAD_POSTS_CITY_SUCCESS,
+      data: result,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_POSTS_CITY_FAILURE,
+      data: err.response.data,
+    });
+  }
+}
+function loadPostsCityAndGuAPI(data) {
+  console.log(data);
+  return apis.loadPostsCityAndGu(data);
+}
+
+function* loadPostsCityAndGu(action) {
+  try {
+    const result = yield call(loadPostsCityAndGuAPI, action.data);
+    yield put({
+      type: LOAD_POSTS_CITY_GU_SUCCESS,
+      data: result,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_POSTS_CITY_GU_FAILURE,
+      data: err.response.data,
+    });
+  }
+}
+
 function* watchLoadPosts() {
   yield takeLatest(LOAD_POSTS_REQUEST, loadPosts);
 }
@@ -146,15 +183,23 @@ function* watchDetailPost() {
 function* watchDeletePost() {
   yield takeLatest(DELETE_POST_REQUEST, deletePost);
 }
+function* watchLoadPostsCity() {
+  yield takeLatest(LOAD_POSTS_CITY_REQUEST, loadPostsCity);
+}
+function* watchLoadPostsCityAndGu() {
+  yield takeLatest(LOAD_POSTS_CITY_GU_REQUEST, loadPostsCityAndGu);
+}
 
 export default function* userSaga() {
   yield all(
-    [ 
+    [
       fork(watchAddPost),
       fork(watchLoadPosts),
       fork(watchEditPost),
       fork(watchDetailPost),
       fork(watchDeletePost),
+      fork(watchLoadPostsCity),
+      fork(watchLoadPostsCityAndGu),
     ]
   );
 }

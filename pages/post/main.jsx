@@ -5,11 +5,13 @@ import { PlusOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import PostCard from "./postcard";
 import { useRouter } from 'next/router'
+import CityContainer from "../city";
 const Main = (props) => {
   const router = useRouter();
   const { mainPosts } = useSelector(({ post }) => post);
   return (
     <>
+      <CityContainer />
       <Divider orientation="left">소개합니다</Divider>
       <Row gutter={8}>
         {

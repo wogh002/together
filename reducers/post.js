@@ -9,7 +9,7 @@ export const initialState = {
   addPostError: null,
   editPostDone: false,
   editPostError: null,
-  detailPostDone: false,  
+  detailPostDone: false,
   detailPostError: null,
   deletePostDone: false,
   deletePostError: null,
@@ -17,6 +17,10 @@ export const initialState = {
   // removePostLoading: false,
   // removePostDone: false,
   // removePostError: null,
+  loadPostsCityDone: false,
+  loadPostsCityError: null,
+  loadPostsCityAndGuDone: false,
+  loadPostsCityAndGuError: null,
 };
 
 export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
@@ -39,10 +43,13 @@ export const DELETE_POST_REQUEST = 'DELETE_POST_REQUEST';
 export const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS';
 export const DELETE_POST_FAILURE = 'DELETE_POST_FAILURE';
 
-// export const loadPost = (data) => ({
-//   type: LOAD_POSTS_REQUEST,
-//   data,
-// });
+export const LOAD_POSTS_CITY_REQUEST = "LOAD_POSTS_CITY_REQUEST";
+export const LOAD_POSTS_CITY_SUCCESS = "LOAD_POSTS_CITY_SUCCESS";
+export const LOAD_POSTS_CITY_FAILURE = "LOAD_POSTS_CITY_FAILURE";
+
+export const LOAD_POSTS_CITY_GU_REQUEST = "LOAD_POSTS_CITY_GU_REQUEST";
+export const LOAD_POSTS_CITY_GU_SUCCESS = "LOAD_POSTS_CITY_GU_SUCCESS";
+export const LOAD_POSTS_CITY_GU_FAILURE = "LOAD_POSTS_CITY_GU_FAILURE";
 
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
@@ -143,7 +150,29 @@ const reducer = (state = initialState, action) =>
         break;
       case DELETE_POST_FAILURE:
         draft.deletePostError = action.error;
-        break;  
+        break;
+      case LOAD_POSTS_CITY_REQUEST:
+        draft.loadPostsCityDone = false;
+        draft.loadPostsCityError = null;
+        break;
+      case LOAD_POSTS_CITY_SUCCESS:
+        draft.loadPostsCityDone = true;
+        draft.mainPosts = action.data.content;
+        break;
+      case LOAD_POSTS_CITY_FAILURE:
+        draft.loadPostsCityError = action.error;
+        break;
+      case LOAD_POSTS_CITY_GU_REQUEST:
+        draft.loadPostsCityAndGuDone = false;
+        draft.loadPostsCityAndGuError = null;
+        break;
+      case LOAD_POSTS_CITY_GU_SUCCESS:
+        draft.loadPostsCityAndGuDone = true;
+        draft.mainPosts = action.data.content;
+        break;
+      case LOAD_POSTS_CITY_GU_FAILURE:
+        draft.loadPostsCityAndGuError = action.error;
+        break;
       default:
         break;
     }

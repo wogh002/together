@@ -8,6 +8,7 @@ import { END } from 'redux-saga';
 import { LOAD_USER_REQUEST } from '../reducers/user';
 import { LOAD_POSTS_REQUEST } from "../reducers/post";
 import { NAME } from '../util/user';
+import Main from './post/main';
 const Home = () => {
   const { me } = useSelector(({ user }) => user);
   const dispatch = useDispatch();
@@ -19,11 +20,10 @@ const Home = () => {
       });
     }
   }, [dispatch]);
-
   return (
     <>
-      <Layout>
-      </Layout>
+      <Layout />
+      <Main/>
     </>
   )
 }
