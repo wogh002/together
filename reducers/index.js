@@ -14,6 +14,9 @@ const rootReducer = (state, action) => {
                 post,
                 zone
             });
+            console.log(state);
+            console.log("---------------------------");
+            console.log(action);
             return combineReducer(state, action);
         }
     }
