@@ -14,9 +14,6 @@ export const initialState = {
   deletePostDone: false,
   deletePostError: null,
   hasMorePosts: null,
-  // removePostLoading: false,
-  // removePostDone: false,
-  // removePostError: null,
 };
 
 export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
@@ -117,6 +114,7 @@ const reducer = (state = initialState, action) =>
         draft.editPostError = null;
         break;
       case EDIT_POST_SUCCESS:
+        draft.mainPosts.find((item) => item.postId === action.data.postId) ? action.data : "";
         draft.editPostDone = true;
         break;
       case EDIT_POST_FAILURE:

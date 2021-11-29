@@ -1,6 +1,5 @@
 import { all, fork, put, takeLatest, call } from "redux-saga/effects";
 import {
-  generateDummyPost,
   LOAD_POSTS_REQUEST,
   LOAD_POSTS_SUCCESS,
   LOAD_POSTS_FAILURE,
@@ -20,13 +19,14 @@ import {
 import { apis } from "../api/axios";
 
 function loadPostsAPI(data) {
+  console.log(data)
   return apis.getPost(data);
 }
 
 function* loadPosts(action) {
   try {
     const result = yield call(loadPostsAPI,action.data);
-    console.log(result.data);
+
     yield put({
       type: LOAD_POSTS_SUCCESS,
       data: result.data,

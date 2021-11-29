@@ -13,7 +13,7 @@ const ButtonWrap = styled.div`
 
 const PostCard = (props) => {
   const router = useRouter();
-  const { id } = router.query;
+  const { postId } = router.query;
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -69,14 +69,14 @@ const PostCard = (props) => {
                 margin="0 10px 0 0"
                 padding="0"
                 onClick={() => {
-                  router.push(`/post/${props.post.id}`);
+                  router.push(`/posts/${props.post.postId}`);
                 }}
               >
                 수정
               </Button>
               <Button padding="0" onClick={() => {
-                  console.log(props.post.id);
-                  dispatch(deletePost(props.post.id));
+                  console.log(props.post.postId);
+                  dispatch(deletePost(props.post.postId));
                   router.push('/');
                 }}>삭제</Button>
             </ButtonWrap>

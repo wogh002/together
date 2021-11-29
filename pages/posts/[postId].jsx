@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { editPost } from "../../reducers/post";
+import { editPost, EDIT_POST_REQUEST } from "../../reducers/post";
 import { Form, Button, Select, Radio, Input, Space, DatePicker } from "antd";
 import "antd/dist/antd.css";
+import wrapper from '../../store/configureStore';
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import moment from "moment";
@@ -28,16 +29,13 @@ const EditPost = (props) => {
   const dispatch = useDispatch();
 
   const router = useRouter();
-  const { id } = router.query;
+  const { postId } = router.query;
 
   const { mainPosts } = useSelector(({ post }) => post);
-  // next.js 
-  // useEffect(() => {
-  //   dispatch(detailPost(id));
-  // }, [dispatch, id]);
+ 
 
   // const [{framework,id,imagePath,mainField}] = mainPosts.filter(item => item.id === Number(id));
-  const postContents = mainPosts.filter((item) => item.id === Number(id));
+  const postContents = mainPosts.filter((item) => item.postId === Number(postId));
   const postContent = postContents[0];
 
   const [date, setDate] = useState("");
@@ -49,7 +47,9 @@ const EditPost = (props) => {
   };
 
   const areaList = ["서울특별시", "경기도"];
-  const [area, setArea] = useState(postContent.postCity);
+  // const [area, setArea] = useState(postContent.postCity);
+  console.log(postContent)
+  const [area, setArea] = useState(null);
   const handleArea = (e) => {
     console.log(e);
     setArea(e);
@@ -100,7 +100,7 @@ const EditPost = (props) => {
 
   const onSubmitForm = () => {
     const data = {
-      id,
+      postId,
       insertDt: date,
       postState: radiobox,
       postCity: area,
@@ -113,8 +113,7 @@ const EditPost = (props) => {
       imagePath: "",
       postContent: intro,
     };
-    dispatch(editPost( data ));
-    console.log(data);
+    dispatch(editPost(data));
     router.push("/");
   };
 
@@ -239,4 +238,12 @@ const EditPost = (props) => {
     </FormContainer>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async (context) => {
+      console.log("==========================요기까지");
+      console.log(context.params);
+    },
+);
 export default EditPost;

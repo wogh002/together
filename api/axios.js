@@ -9,7 +9,14 @@ export const apis = {
     params: { page, size }
   }),
   
+  // 게시물 수정하기
+  editPost: (data) => instance.put(`/posts/${data.postId}`, data),
+  
 };
+
+
+  
+
 
 instance.defaults.withCredentials = true;
 export default instance;

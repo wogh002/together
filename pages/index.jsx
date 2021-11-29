@@ -6,7 +6,7 @@ import { ZONE_REQUEST } from '../reducers/zone';
 import { useDispatch, useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { LOAD_USER_REQUEST } from '../reducers/user';
-import { LOAD_POSTS_REQUEST } from "../reducers/post";
+import { LOAD_POSTS_REQUEST, ADD_POSTS_REQUEST, EDIT_POSTS_REQUEST } from "../reducers/post";
 
 const Home = () => {
   const { me } = useSelector(({ user }) => user);
@@ -43,7 +43,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         });
         store.dispatch(END);
         await store.sagaTask.toPromise();
-    }
+    },
 );
 export default Home;
 

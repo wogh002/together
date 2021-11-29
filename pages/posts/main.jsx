@@ -26,7 +26,7 @@ const Main = (props) => {
       <Row gutter={8}>
         {
           mainPosts && mainPosts.map((item) => {  
-            return <Col span={6} order={4} xs={24} md={6} key={item.id} >
+            return <Col span={6} order={4} xs={24} md={6} key={item.postId} >
               <PostCard post={item} />
               </Col>
           })

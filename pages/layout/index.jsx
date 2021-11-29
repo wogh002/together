@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Layout, PageHeader, Button, Select, Radio } from "antd";
 import "antd/dist/antd.css";
 import styled from "styled-components";
-import Main from "../post/main"
+import Main from "../posts/main"
 
 export const GhostWrapper = styled.div`
   margin: 0px;
