@@ -1,11 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Input } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import { Form, BlueBtn, Message,CheckBtn } from './index';
+import { Form, BlueBtn, Message, CheckBtn } from './index';
 import ImageUpload from '../../components/upload-img/imageUpload';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
 import useInput from '../../hooks/useInput';
+import Link from 'next/link';
 import {
     SIGN_UP_REQUEST,
     CHECK_ID_REQUEST,
@@ -116,14 +117,14 @@ const Index = () => {
                     Check ID
                 </CheckBtn>
                 {
-                        userId === userIdCheck ? userId &&
-                            <Message color={checkIdMessage === "ok" ? "#4CAF50" : "#D30000"}>
-                                {idReg ? checkIdMessage : "첫문자는 영소문자 -> 글자 수(7~9)"}
-                            </Message>
-                            :
-                            <Message color="#D30000">
-                                Check ID 를 눌러주세요
-                            </Message>
+                    userId === userIdCheck ? userId &&
+                        <Message color={checkIdMessage === "ok" ? "#4CAF50" : "#D30000"}>
+                            {idReg ? checkIdMessage : "첫문자는 영소문자 -> 글자 수(7~9)"}
+                        </Message>
+                        :
+                        <Message color="#D30000">
+                            Check ID 를 눌러주세요
+                        </Message>
                 }
                 <div>
                     <Input
@@ -136,7 +137,7 @@ const Index = () => {
                         prefix={<UserOutlined className="site-form-item-icon" />}
                     />
 
-                    
+
                     <Input
                         required
                         type="text"
@@ -190,9 +191,13 @@ const Index = () => {
                     <BlueBtn htmlType="submit" type="primary">
                         가입하기
                     </BlueBtn>
-                    <BlueBtn type="primary">
-                        취소
-                    </BlueBtn>
+                    <Link href="/">
+                        <a>
+                            <BlueBtn type="primary">
+                                취소
+                            </BlueBtn>
+                        </a>
+                    </Link>
                 </div>
             </>
         </Form>

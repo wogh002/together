@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { setCookie, TOKEN_NAME } from '../util/cookie';
+import {NAME} from '../util/user';
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAILURE = "LOGIN_FAILURE";
@@ -12,6 +12,9 @@ export const CHECK_ID_FAILURE = "CHECK_ID_FAILURE";
 export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST";
 export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
 export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
+export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
+export const LOGOUT_FAILURE = "LOGOUT_FAILURE";
 const initalState = {
     me: null,
     logInMessage: null,
@@ -23,6 +26,8 @@ const initalState = {
     checkIdError: null,
     loadUserDone: false,
     loadUserError: null,
+    logOutDone: false,
+    logOutError: null,
 }
 const reducer = (state = initalState, action) => produce(state, draft => {
     switch (action.type) {
@@ -36,8 +41,7 @@ const reducer = (state = initalState, action) => produce(state, draft => {
             draft.me = {
                 ...action.data,
             };
-            localStorage.setItem('aaa',action.data.headers.authorization);
-            // setCookie(TOKEN_NAME, action.data.headers.authorization, { path: "/" });
+            localStorage.setItem(NAME, action.data.headers.authorization);
             draft.logInMessage = action.data.message;
             draft.logInDone = true;
             break;
@@ -74,6 +78,18 @@ const reducer = (state = initalState, action) => produce(state, draft => {
             break;
         case LOAD_USER_FAILURE:
             draft.loadUserError = action.error;
+            break;
+        case LOGOUT_REQUEST:
+            draft.logOutDone = false;
+            draft.logOutError = null;
+            break;
+        case LOGOUT_SUCCESS:
+            draft.me = null;
+            localStorage.removeItem(NAME);
+            draft.logOutDone = true;
+            break;
+        case LOGOUT_FAILURE:
+            draft.logOutError = action.error;
             break;
         default:
             break;

@@ -59,9 +59,6 @@ const AddPost = () => {
     minutes +
     ":" +
     seconds;
-
-  console.log(dateString);
-
   const [date, setDate] = useState(dateString);
   const [File, setFile] = useState(null);
 

@@ -9,7 +9,6 @@ const ImageUpload = ({ setImageFile }) => {
         JPEG: "JPEG",
         BMP: "BMP",
     }
-
     // 파일 압축
     const compressImage = async (image) => {
         try {

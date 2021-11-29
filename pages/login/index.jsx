@@ -6,6 +6,7 @@ import { Form, BlueBtn, Message } from '../signup/index';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGIN_REQUEST } from '../../reducers/user';
 import useInput from '../../hooks/useInput';
+import Link from 'next/link';
 const Index = () => {
     const dispatch = useDispatch();
     const router = useRouter();
@@ -62,9 +63,13 @@ const Index = () => {
                 <BlueBtn type="primary" htmlType="submit">
                     로그인
                 </BlueBtn>
-                <BlueBtn type="primary">
-                    취소
-                </BlueBtn>
+                <Link href="/">
+                    <a>
+                        <BlueBtn type="primary">
+                            취소
+                        </BlueBtn>
+                    </a>
+                </Link>
             </div>
         </Form>
     )

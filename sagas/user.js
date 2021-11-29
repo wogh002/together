@@ -11,10 +11,12 @@ import {
     SIGN_UP_FAILURE,
     LOAD_USER_REQUEST,
     LOAD_USER_SUCCESS,
-    LOAD_USER_FAILURE
+    LOAD_USER_FAILURE,
+    LOGOUT_REQUEST,
+    LOGOUT_SUCCESS,
+    LOGOUT_FAILURE
 } from '../reducers/user';
 import axios from '../api/axios';
-import { getCookie , TOKEN_NAME} from '../util/cookie';
 const logInAPI = data => {
     return axios.post('/user/auth', data);
 }
@@ -85,6 +87,18 @@ function* loadUser() {
         })
     }
 }
+function* logOut() {
+    try {
+        yield put({
+            type: LOGOUT_SUCCESS,
+        });
+    } catch (error) {
+        yield put({
+            type: LOGOUT_FAILURE,
+            error: error
+        })
+    }
+}
 function* watchLogIn() {
     yield takeLatest(LOGIN_REQUEST, logIn);
 }
@@ -97,12 +111,15 @@ function* watchSignUp() {
 function* watchLoadUser() {
     yield takeLatest(LOAD_USER_REQUEST, loadUser);
 }
+function* watchLogOut() {
+    yield takeLatest(LOGOUT_REQUEST, logOut);
+}
 export default function* userSaga() {
     yield all([
         fork(watchLogIn),
         fork(watchCheckId),
         fork(watchSignUp),
         fork(watchLoadUser),
-        // fork(watchLogOut),
+        fork(watchLogOut),
     ])
 }
