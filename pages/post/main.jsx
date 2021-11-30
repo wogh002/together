@@ -8,7 +8,7 @@ import { useRouter } from 'next/router'
 import CityContainer from "../city";
 const Main = (props) => {
   const router = useRouter();
-  const { mainPosts } = useSelector(({ post }) => post);
+  const { post: { mainPosts }, user: { me } } = useSelector((state) => state);
   return (
     <>
       <CityContainer />
@@ -22,15 +22,18 @@ const Main = (props) => {
           })
         }
       </Row>
-      <Button
-        type="primary"
-        shape="circle"
-        icon={<PlusOutlined />}
-        size="large"
-        style={{ position: 'fixed', right: '30px', bottom: '30px' }}
-        onClick={() => {
-          router.push('/post/addpost')
-        }} />
+      {
+        me &&
+        <Button
+          type="primary"
+          shape="circle"
+          icon={<PlusOutlined />}
+          size="large"
+          style={{ position: 'fixed', right: '30px', bottom: '30px' }}
+          onClick={() => {
+            router.push('/post/addpost')
+          }} />
+      }
     </>
   );
 };
