@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-// import FileUpload from "../../components/upload-file/fileUpload";
+import FileUpload from "../../components/upload-file/fileUpload";
 import { Form, Button, Select, Radio, Input, DatePicker, Space } from "antd";
 import "antd/dist/antd.css";
 import styled from "styled-components";
@@ -27,12 +27,11 @@ const FormContainer = styled.section`
 const AddPost = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-
-  // 구조분해할당 es6
-  const { addPostLoading, addPostDone, mainPosts } = useSelector(
-    ({ post }) => post
-  );
-
+  const [uploadFile, setUploadFile] = useState(null);
+  const {
+    post: { addPostLoading },
+    zone: { zone },
+  } = useSelector((state) => state);
   // 날짜 시간을 위한 ant design선언
   function onChange(date, dateString) {
     console.log(date, dateString);
@@ -67,19 +66,21 @@ const AddPost = () => {
     console.log(e.target.value);
     setRadiobox(e.target.value);
   };
+  const [currentGu, setCurrentGu] = useState("구 선택");
+  const [currentSi, setCurrentSi] = useState("시 선택");
 
-  const areaList = ["서울특별시", "경기도"];
-  const [area, setArea] = useState("가능 지역 선택");
+  const [guArr, setGuArr] = useState([]);
   const handleArea = (e) => {
-    console.log(e);
-    setArea(e);
+    for (let i = 0; i < zone.length; i++) {
+      if (zone[i].city === e) {
+        setGuArr(zone[i].gu);
+        setCurrentSi(e);
+        return;
+      }
+    }
   };
-
-  const siguList = ["광명시", "강남구"];
-  const [sigu, setSigu] = useState("가능 지역 선택");
-  const handleSigu = (e) => {
-    console.log(e);
-    setSigu(e);
+  const handleGu = (e) => {
+    setCurrentGu(e);
   };
 
   const mainFieldList = ["프론트엔드", "백엔드"];
@@ -118,18 +119,16 @@ const AddPost = () => {
     setIntro(e.target.value);
   };
 
-  // useEffect(() => {
-  //   // if (addPostDone) {
-  //   //   setText("");
-  //   // }
-  // }, [addPostDone]);
+  useEffect(() => {
+    setCurrentGu("구 선택");
+  }, [currentSi]);
 
   const createFormData = () => {
     const formData = new FormData();
-    formData.append("postId", postId);
-    formData.append("insertDt", date);
     formData.append("postState", radiobox);
-    formData.append("postCity", area);
+    formData.append("insertDt", date);
+    formData.append("", currentSi);
+    formData.append("API 이름", area);
     formData.append("postGu", sigu);
     formData.append("mainField", mainField);
     formData.append("lang", language);
@@ -152,13 +151,13 @@ const AddPost = () => {
   const onSubmitForm = (e) => {
     e.preventDefault();
     const { formData, config } = createFormData();
-      dispatch({
-        type: ADD_POST_REQUEST,
-        data: {
-          formData,
-          config,
-        },
-      });
+    dispatch({
+      type: ADD_POST_REQUEST,
+      data: {
+        formData,
+        config,
+      },
+    });
     router.push("/");
   };
 
@@ -178,7 +177,6 @@ const AddPost = () => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-
         <Form.Item label="작성일자" name="size" style={{ minWidth: 400 }}>
           <Space direction="vertical">
             <DatePicker
@@ -204,16 +202,16 @@ const AddPost = () => {
           hasFeedback
           rules={[{ required: true, message: "Please select your country!" }]}
         >
-          <Select onChange={handleArea} value={area}>
-            {areaList.map((item) => (
-              <Option key={item} value={item}>
-                {item}
+          <Select onChange={handleArea} value={currentSi}>
+            {zone.map((item, index) => (
+              <Option key={index} value={item.city}>
+                {item.city}
               </Option>
             ))}
           </Select>
-          <Select onChange={handleSigu} value={sigu}>
-            {siguList.map((item) => (
-              <Option key={item} value={item}>
+          <Select onChange={handleGu} value={currentGu}>
+            {guArr.map((item, index) => (
+              <Option key={index} value={item}>
                 {item}
               </Option>
             ))}
@@ -262,12 +260,7 @@ const AddPost = () => {
           </Select>
         </Form.Item>
 
-        <Form.Item
-          label="포트폴리오 및 파일: "
-          hasFeedback
-          rules={[{ required: true, message: "선택" }]}
-        >        </Form.Item>
-        {/* <FileUpload setUploadFile={setUploadFile} /> */}
+        <FileUpload setUploadFile={setUploadFile} uploadFile={uploadFile}/>
 
 
         <Form.Item
