@@ -2,6 +2,8 @@ import React, { useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FileUpload from "../../components/upload-file/fileUpload";
 import { Form, Button, Select, Radio, Input, DatePicker, Space } from "antd";
+import {ADD_POST_REQUEST} from '../../reducers/post';
+
 import "antd/dist/antd.css";
 import styled from "styled-components";
 import { useRouter } from "next/router";
@@ -60,7 +62,7 @@ const AddPost = () => {
   const [date, setDate] = useState(dateString);
   const [File, setFile] = useState(null);
 
-  const radioList = ["프로젝트 구함", "스터디 구함"];
+  const radioList = ["project", "study"];
   const [radiobox, setRadiobox] = useState("");
   const handleRadio = (e) => {
     console.log(e.target.value);
@@ -83,21 +85,21 @@ const AddPost = () => {
     setCurrentGu(e);
   };
 
-  const mainFieldList = ["프론트엔드", "백엔드"];
+  const mainFieldList = ["front", "back"];
   const [mainField, setMainField] = useState("주분야 선택");
   const handleMainField = (e) => {
     console.log(e);
     setMainField(e);
   };
 
-  const languageList = ["java", "PHP", "javascript", "C#", "기타"];
+  const languageList = ["java", "php", "js", "c#", "etc"];
   const [language, setLanguage] = useState("언어 선택");
   const handleLanguage = (e) => {
     console.log(e);
     setLanguage(e);
   };
 
-  const frameworkList = ["spring", "springboot", "react", "vue.js", "기타"];
+  const frameworkList = ["spring", "springBoot", "react", "vue", "etc"];
   const [framework, setFramework] = useState("프레임워크 선택");
   const handleFramework = (e) => {
     console.log(e);
@@ -126,16 +128,13 @@ const AddPost = () => {
   const createFormData = () => {
     const formData = new FormData();
     formData.append("postState", radiobox);
-    formData.append("insertDt", date);
-    formData.append("", currentSi);
-    formData.append("API 이름", area);
-    formData.append("postGu", sigu);
+    formData.append("postCity", currentSi);
+    formData.append("postGu", currentGu);
     formData.append("mainField", mainField);
     formData.append("lang", language);
     formData.append("framework", framework);
     formData.append("projectExperience", experience);
-    formData.append("tel", "");
-    formData.append("filePath", "");
+    formData.append("fileUpload", uploadFile);
     formData.append("postContent", intro);
     const config = {
       headers: {
@@ -149,7 +148,6 @@ const AddPost = () => {
   };
 
   const onSubmitForm = (e) => {
-    e.preventDefault();
     const { formData, config } = createFormData();
     dispatch({
       type: ADD_POST_REQUEST,
@@ -161,9 +159,7 @@ const AddPost = () => {
     router.push("/");
   };
 
-  // const onFinish = (values) => {
-  //   console.log("Success:", values);
-  // };
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -186,8 +182,8 @@ const AddPost = () => {
             />
           </Space>
         </Form.Item>
-
-        <Form.Item label="모집선택" name="size" style={{ minWidth: 400 }}>
+{/* name="size" */}
+        <Form.Item label="모집선택" style={{ minWidth: 400 }}>
           <Radio.Group onChange={handleRadio} value={radiobox}>
             {radioList.map((item) => (
               <Radio.Button key={item} value={item}>
@@ -262,7 +258,6 @@ const AddPost = () => {
 
         <FileUpload setUploadFile={setUploadFile} uploadFile={uploadFile}/>
 
-
         <Form.Item
           label="자기소개: "
           hasFeedback
@@ -282,6 +277,7 @@ const AddPost = () => {
           </Button>
         </Form.Item>
       </Form>
+
     </FormContainer>
   );
 };

@@ -13,6 +13,7 @@ const ButtonWrap = styled.div`
 `;
 
 const PostCard = (props) => {
+  console.log(props.post.postId);
   const router = useRouter();
   const { id } = router.query;
   const dispatch = useDispatch();
@@ -86,9 +87,7 @@ const PostCard = (props) => {
                   dispatch(deletePost(props.post.id));
                   router.push('/');
                 }}>
-                  삭제
                 </Button>
-
               </ButtonWrap>
             </div>
           </Modal>
