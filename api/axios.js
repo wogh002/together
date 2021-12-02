@@ -7,7 +7,7 @@ export const apis = {
   // 전제 게시물 불러오기
   getPost: ({ page, size, sort }) =>
     instance.get(`/posts?page=${page}&size=${size}&sort=${sort}`),
-    
+
   loadPostsCity: ({ city, page, size }) =>
     instance.get(`/posts/city/${city}`, {
       params: { page, size },
@@ -18,6 +18,8 @@ export const apis = {
     }),
   addPost: ({ formData, config }) =>
     instance.post("/user/posts", formData, config),
+    
+  detailPost: (data) => instance.get(`/posts/${data}`),
 };
 export default instance;
 

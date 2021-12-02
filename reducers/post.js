@@ -9,8 +9,11 @@ export const initialState = {
   addPostError: null,
   editPostDone: false,
   editPostError: null,
+
   detailPostDone: false,
   detailPostError: null,
+  detailPost : null,
+
   deletePostDone: false,
   deletePostError: null,
   hasMorePosts: null,
@@ -61,7 +64,7 @@ export const editPost = (data) => ({
   data,
 });
 
-export const detailPost = (data) => ({
+export const currentPost = (data) => ({
   type: DETAIL_POST_REQUEST,
   data,
 });
@@ -127,13 +130,15 @@ const reducer = (state = initialState, action) =>
       case EDIT_POST_FAILURE:
         draft.editPostError = action.error;
         break;
+
       case DETAIL_POST_REQUEST:
         draft.detailPostDone = false;
         draft.detailPostError = null;
+        draft.detailPost = null;
         break;
       case DETAIL_POST_SUCCESS:
         draft.detailPostDone = true;
-        draft.mainPosts = action.data.concat(draft.mainPosts);
+        draft.detailPost = action.data.data;
         break;
       case DETAIL_POST_FAILURE:
         draft.detailPostError = action.error;
