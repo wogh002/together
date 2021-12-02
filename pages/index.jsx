@@ -35,6 +35,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         data: {
           page: 0,
           size: 8,
+          sort: 'registerDate,desc',
         }
       });
       store.dispatch({

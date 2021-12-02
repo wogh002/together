@@ -1,7 +1,9 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-// import FileUpload from "../../components/upload-file/fileUpload";
+import FileUpload from "../../components/upload-file/fileUpload";
 import { Form, Button, Select, Radio, Input, DatePicker, Space } from "antd";
+import {ADD_POST_REQUEST} from '../../reducers/post';
+
 import "antd/dist/antd.css";
 import styled from "styled-components";
 import { useRouter } from "next/router";
@@ -27,12 +29,11 @@ const FormContainer = styled.section`
 const AddPost = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-
-  // 구조분해할당 es6
-  const { addPostLoading, addPostDone, mainPosts } = useSelector(
-    ({ post }) => post
-  );
-
+  const [uploadFile, setUploadFile] = useState(null);
+  const {
+    post: { addPostLoading },
+    zone: { zone },
+  } = useSelector((state) => state);
   // 날짜 시간을 위한 ant design선언
   function onChange(date, dateString) {
     console.log(date, dateString);
@@ -46,7 +47,6 @@ const AddPost = () => {
   const hours = ("0" + today.getHours()).slice(-2);
   const minutes = ("0" + today.getMinutes()).slice(-2);
   const seconds = ("0" + today.getSeconds()).slice(-2);
-
   const dateString =
     year +
     "-" +
@@ -62,42 +62,44 @@ const AddPost = () => {
   const [date, setDate] = useState(dateString);
   const [File, setFile] = useState(null);
 
-  const radioList = ["프로젝트 구함", "스터디 구함"];
+  const radioList = ["project", "study"];
   const [radiobox, setRadiobox] = useState("");
   const handleRadio = (e) => {
     console.log(e.target.value);
     setRadiobox(e.target.value);
   };
+  const [currentGu, setCurrentGu] = useState("구 선택");
+  const [currentSi, setCurrentSi] = useState("시 선택");
 
-  const areaList = ["서울특별시", "경기도"];
-  const [area, setArea] = useState("가능 지역 선택");
+  const [guArr, setGuArr] = useState([]);
   const handleArea = (e) => {
-    console.log(e);
-    setArea(e);
+    for (let i = 0; i < zone.length; i++) {
+      if (zone[i].city === e) {
+        setGuArr(zone[i].gu);
+        setCurrentSi(e);
+        return;
+      }
+    }
+  };
+  const handleGu = (e) => {
+    setCurrentGu(e);
   };
 
-  const siguList = ["광명시", "강남구"];
-  const [sigu, setSigu] = useState("가능 지역 선택");
-  const handleSigu = (e) => {
-    console.log(e);
-    setSigu(e);
-  };
-
-  const mainFieldList = ["프론트엔드", "백엔드"];
+  const mainFieldList = ["front", "back"];
   const [mainField, setMainField] = useState("주분야 선택");
   const handleMainField = (e) => {
     console.log(e);
     setMainField(e);
   };
 
-  const languageList = ["java", "PHP", "javascript", "C#", "기타"];
+  const languageList = ["java", "php", "js", "c#", "etc"];
   const [language, setLanguage] = useState("언어 선택");
   const handleLanguage = (e) => {
     console.log(e);
     setLanguage(e);
   };
 
-  const frameworkList = ["spring", "springboot", "react", "vue.js", "기타"];
+  const frameworkList = ["spring", "springBoot", "react", "vue", "etc"];
   const [framework, setFramework] = useState("프레임워크 선택");
   const handleFramework = (e) => {
     console.log(e);
@@ -119,25 +121,20 @@ const AddPost = () => {
     setIntro(e.target.value);
   };
 
-  // useEffect(() => {
-  //   // if (addPostDone) {
-  //   //   setText("");
-  //   // }
-  // }, [addPostDone]);
+  useEffect(() => {
+    setCurrentGu("구 선택");
+  }, [currentSi]);
 
   const createFormData = () => {
     const formData = new FormData();
-    formData.append("postId", postId);
-    formData.append("insertDt", date);
     formData.append("postState", radiobox);
-    formData.append("postCity", area);
-    formData.append("postGu", sigu);
+    formData.append("postCity", currentSi);
+    formData.append("postGu", currentGu);
     formData.append("mainField", mainField);
     formData.append("lang", language);
     formData.append("framework", framework);
     formData.append("projectExperience", experience);
-    formData.append("tel", "");
-    formData.append("filePath", "");
+    formData.append("fileUpload", uploadFile);
     formData.append("postContent", intro);
     const config = {
       headers: {
@@ -151,21 +148,18 @@ const AddPost = () => {
   };
 
   const onSubmitForm = (e) => {
-    e.preventDefault();
     const { formData, config } = createFormData();
-      dispatch({
-        type: ADD_POST_REQUEST,
-        data: {
-          formData,
-          config,
-        },
-      });
+    dispatch({
+      type: ADD_POST_REQUEST,
+      data: {
+        formData,
+        config,
+      },
+    });
     router.push("/");
   };
 
-  // const onFinish = (values) => {
-  //   console.log("Success:", values);
-  // };
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -179,7 +173,6 @@ const AddPost = () => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-
         <Form.Item label="작성일자" name="size" style={{ minWidth: 400 }}>
           <Space direction="vertical">
             <DatePicker
@@ -189,8 +182,8 @@ const AddPost = () => {
             />
           </Space>
         </Form.Item>
-
-        <Form.Item label="모집선택" name="size" style={{ minWidth: 400 }}>
+{/* name="size" */}
+        <Form.Item label="모집선택" style={{ minWidth: 400 }}>
           <Radio.Group onChange={handleRadio} value={radiobox}>
             {radioList.map((item) => (
               <Radio.Button key={item} value={item}>
@@ -205,16 +198,16 @@ const AddPost = () => {
           hasFeedback
           rules={[{ required: true, message: "Please select your country!" }]}
         >
-          <Select onChange={handleArea} value={area}>
-            {areaList.map((item) => (
-              <Option key={item} value={item}>
-                {item}
+          <Select onChange={handleArea} value={currentSi}>
+            {zone.map((item, index) => (
+              <Option key={index} value={item.city}>
+                {item.city}
               </Option>
             ))}
           </Select>
-          <Select onChange={handleSigu} value={sigu}>
-            {siguList.map((item) => (
-              <Option key={item} value={item}>
+          <Select onChange={handleGu} value={currentGu}>
+            {guArr.map((item, index) => (
+              <Option key={index} value={item}>
                 {item}
               </Option>
             ))}
@@ -263,13 +256,7 @@ const AddPost = () => {
           </Select>
         </Form.Item>
 
-        <Form.Item
-          label="포트폴리오 및 파일: "
-          hasFeedback
-          rules={[{ required: true, message: "선택" }]}
-        >        </Form.Item>
-        {/* <FileUpload setUploadFile={setUploadFile} /> */}
-
+        <FileUpload setUploadFile={setUploadFile} uploadFile={uploadFile}/>
 
         <Form.Item
           label="자기소개: "
@@ -290,6 +277,7 @@ const AddPost = () => {
           </Button>
         </Form.Item>
       </Form>
+
     </FormContainer>
   );
 };
