@@ -28,7 +28,6 @@ const PostCard = (props) => {
     dispatch(currentPost(props.post.postId));
     setVisible(true);
   };
-  console.log(me.userId);
 
   const handleOk = () => {
     setModalText("");
@@ -95,28 +94,31 @@ const PostCard = (props) => {
                   Click to download {me.userNickname} portfolio
                 </a>
               </p>
-
+              {
+                console.log(props.post.postId)
+              }
               <ButtonWrap>
                 {/* 현재 접속된 아이디와 게시글에 등록된 id가 같으면? */}
-
-                <Button
+              {       
+                me.userId === detailPost.userId ?
+                <><Button
                   margin="0 10px 0 0"
                   padding="0"
                   onClick={() => {
-                    router.push(`/post/${props.post.id}`);
+                    router.push(`/post/${props.post.postId}`);
                   }}
-                >
-                  수정
-                </Button>
+                >수정</Button>
                 <Button
                   padding="0"
                   onClick={() => {
-                    dispatch(deletePost(props.post.id));
+                    dispatch(deletePost(props.post.postId));
+                    // 삭제됬습니다 얼럿
                     router.push("/");
                   }}
-                >
-                  삭제
-                </Button>
+                >삭제</Button>
+                </>
+                : null
+              }
               </ButtonWrap>
             </div>
           </Modal>

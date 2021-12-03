@@ -29,7 +29,6 @@ const EditPost = (props) => {
 
   const router = useRouter();
   const { id } = router.query;
-
   const { mainPosts } = useSelector(({ post }) => post);
   // next.js 
   // useEffect(() => {
@@ -40,14 +39,17 @@ const EditPost = (props) => {
   const postContents = mainPosts.filter((item) => item.id === Number(id));
   const postContent = postContents[0];
 
-  const [date, setDate] = useState("");
+
+  const [date, setDate] = useState(postContent);
   const radioList = ["프로젝트 구함", "스터디 구함"];
   const [radiobox, setRadiobox] = useState("");
   const handleRadio = (e) => {
     console.log(e.target.value);
     setRadiobox(e.target.value);
   };
-
+  {
+    console.log(postContent)
+  }
   const areaList = ["서울특별시", "경기도"];
   const [area, setArea] = useState(postContent.postCity);
   const handleArea = (e) => {
@@ -62,7 +64,7 @@ const EditPost = (props) => {
     setSigu(e);
   };
 
-  const mainFieldList = ["프론트엔드", "백엔드"];
+  const mainFieldList = ["front", "back"];
   const [mainField, setMainField] = useState(postContent.mainField);
   const handleMainField = (e) => {
     console.log(e);

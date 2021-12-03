@@ -18,8 +18,10 @@ export const apis = {
     }),
   addPost: ({ formData, config }) =>
     instance.post("/user/posts", formData, config),
-    
+
   detailPost: (data) => instance.get(`/posts/${data}`),
+  
+  deletePost: (data) => instance.delete(`/posts/${data}`),
 };
 export default instance;
 
