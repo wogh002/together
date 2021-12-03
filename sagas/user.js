@@ -46,7 +46,6 @@ function* logIn(action) {
 function* checkId(action) {
     try {
         const result = yield call(checkIdAPI, action.data);
-        console.log(result);
         yield put({
             type: CHECK_ID_SUCCESS,
             data: result.data
@@ -60,16 +59,16 @@ function* checkId(action) {
 }
 function* signUp(action) {
     const result = yield call(signUpAPI, action.data);
-    console.log(result);
     try {
         yield put({
             type: SIGN_UP_SUCCESS,
             data: result.data
         });
     } catch (error) {
+        console.log(error);
         yield put({
             type: SIGN_UP_FAILURE,
-            error: error.response.data
+            error: error.response
         })
     }
 }

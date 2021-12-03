@@ -12,7 +12,9 @@ import {
     CHECK_ID_REQUEST,
 } from '../../reducers/user';
 const TEL_REG_EXP = /^[0-9\b -]{0,13}$/;
+const PASSWORD_REG_EXP = /^[a-zA-z0-9]{6,12}$/;
 const NICKNAME_REG_EXP = /^[ㄱ-ㅎ가-힣a-z0-9_-]{0,20}$/;
+
 const Index = () => {
     const router = useRouter();
     const dispatch = useDispatch();
@@ -71,9 +73,9 @@ const Index = () => {
         formData.append('userId', userId);
         formData.append('userNickname', userNickname);
         formData.append('userTel', userTel);
-        formData.append('imageFile', imageFile);
         formData.append('userPw', password);
         formData.append('userPwCheck', passwordCheck);
+        formData.append('imageFile', imageFile);
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'

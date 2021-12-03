@@ -91,13 +91,11 @@ function detailPostAPI(data) {
 function* detailPost(action) {
   try {
     const result = yield call(detailPostAPI, action.data);
-    console.log(result);
     yield put({
       type: DETAIL_POST_SUCCESS,
       data: result,
     });
   } catch (err) {
-    console.error(err);
     yield put({
       type: DETAIL_POST_FAILURE,
       data: err.response.data,
@@ -113,10 +111,9 @@ function deletePostAPI(data) {
 function* deletePost(action) {
   try {
     const result = yield call(deletePostAPI, action.data);
-    console.log(result);
     yield put({
       type: DELETE_POST_SUCCESS,
-      data: result,
+      data: result.data.postId,
     });
   } catch (err) {
     yield put({
@@ -144,7 +141,6 @@ function* loadPostsCity(action) {
   }
 }
 function loadPostsCityAndGuAPI(data) {
-  console.log(data);
   return apis.loadPostsCityAndGu(data);
 }
 
